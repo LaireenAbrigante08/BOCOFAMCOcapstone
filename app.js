@@ -2,8 +2,9 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
-const authRoutes = require('./routes/authRoutes'); // Authentication routes
 const db = require('./config/db'); // Database connection
+
+const authRoutes = require('./routes/authRoutes'); // Import authentication routes
 
 const app = express();
 const PORT = process.env.PORT || 3003; // Use environment variable for port if available
@@ -27,22 +28,36 @@ app.use(session({
 // Serve static files (CSS, JS, images)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Route for Landing Page
+// Routes
+app.use(authRoutes); // Include authentication routes
+
+// Landing Page
 app.get('/', (req, res) => {
-  res.render('landing'); // Ensure 'landing.ejs' exists in the 'views' folder
+  res.render('landing');
 });
 
-// Route for Admin Home Page
+// Admin Home Page (Only for Admins)
 app.get('/admin/home', (req, res) => {
-  const adminHomePath = path.join(__dirname, 'views', 'adminHome.ejs');
-  if (!require('fs').existsSync(adminHomePath)) {
-    return res.status(500).send("Error: adminHome.ejs view file is missing");
+  if (!req.session.user || req.session.user.role !== 'admin') {
+    return res.redirect('/login');
   }
-  res.render('adminHome');
+  res.render('admin/adminHome', { user: req.session.user }); // Corrected path
 });
 
-// Authentication routes
-app.use('/', authRoutes);
+// Member Home Page (Only for Members)
+app.get('/member/home', (req, res) => {
+  if (!req.session.user || req.session.user.role !== 'member') {
+    return res.redirect('/login');
+  }
+  res.render('member/memberHome', { user: req.session.user }); // Ensure correct path
+});
+
+// Logout Route
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/login');
+  });
+});
 
 // Catch-all route for handling 404 errors
 app.use((req, res) => {

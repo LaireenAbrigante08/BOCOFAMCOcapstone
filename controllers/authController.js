@@ -1,55 +1,60 @@
-// controllers/authController.js
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
-const db = require('../config/db');
-const session = require('express-session');
 
-exports.login = (req, res) => {
-    const { user_id, password } = req.body;
-    db.query('SELECT * FROM users WHERE user_id = ?', [user_id], async (err, results) => {
-        if (err) throw err;
-        if (results.length === 0) return res.send('User not found');
-
-        const user = results[0];
-        const passwordMatch = await bcrypt.compare(password, user.password);
-
-        if (!passwordMatch) return res.send('Incorrect password');
-
-        req.session.user = { user_id: user.user_id, role: user.role };
-        if (user.role === 'admin') {
-            res.redirect('/admin-home');
-        } else {
-            res.redirect('/member-home');
-        }
-    });
+exports.getLogin = (req, res) => {
+  res.render('login', { error: null });
 };
 
-exports.register = async (req, res) => {
-    const { user_id, username, password, email, role } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+exports.postLogin = async (req, res) => {
+  const { email, password } = req.body;
 
-    db.query('INSERT INTO users (user_id, username, password, email, role) VALUES (?, ?, ?, ?, ?)',
-        [user_id, username, hashedPassword, email, role],
-        (err) => {
-            if (err) throw err;
-            res.redirect('/login');
-        }
-    );
+  try {
+    const user = await User.findByEmail(email);
+    if (!user) {
+      return res.render('login', { error: 'Invalid email or password' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.render('login', { error: 'Invalid email or password' });
+    }
+
+    req.session.user = { id: user.id, role: user.role };
+    
+    if (user.role === 'admin') {
+      return res.redirect('/admin/home');
+    } else {
+      return res.redirect('/member/home');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+exports.getRegister = (req, res) => {
+  res.render('register', { error: null });
+};
+
+exports.postRegister = async (req, res) => {
+  const { username, email, password, role } = req.body;
+
+  try {
+    const existingUser = await User.findByEmail(email);
+    if (existingUser) {
+      return res.render('register', { error: 'Email already exists' });
+    }
+
+    await User.create(username, email, password, role);
+    res.redirect('/login');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
 exports.logout = (req, res) => {
-    req.session.destroy(() => res.redirect('/login'));
-};
-
-exports.adminHome = (req, res) => {
-    if (!req.session.user || req.session.user.role !== 'admin') {
-        return res.redirect('/login');
-    }
-    res.render('adminHome', { user: req.session.user });
-};
-
-exports.memberHome = (req, res) => {
-    if (!req.session.user || req.session.user.role !== 'member') {
-        return res.redirect('/login');
-    }
-    res.render('memberHome', { user: req.session.user });
+  req.session.destroy(() => {
+    res.redirect('/login');
+  });
 };
