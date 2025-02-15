@@ -1,29 +1,14 @@
 const db = require('../config/db');
-const bcrypt = require('bcrypt');
 
-class User {
-  static async findByEmail(email) {
-    return new Promise((resolve, reject) => {
-      db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
-        if (err) reject(err);
-        resolve(results[0]); // Return the first result
-      });
-    });
-  }
-
-  static async create(username, email, password, role = 'member') {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    return new Promise((resolve, reject) => {
-      db.query(
-        'INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)',
-        [username, email, hashedPassword, role],
-        (err, results) => {
-          if (err) reject(err);
-          resolve(results);
-        }
-      );
-    });
-  }
-}
+const User = {
+    findByUsername: (username, callback) => {
+        db.query('SELECT * FROM users WHERE username = ?', [username], callback);
+    },
+    
+    create: (username, hashedPassword, role, callback) => {
+        db.query('INSERT INTO users (username, password, role) VALUES (?, ?, ?)', 
+                 [username, hashedPassword, role], callback);
+    }
+};
 
 module.exports = User;
