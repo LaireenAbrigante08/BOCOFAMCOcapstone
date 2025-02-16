@@ -1,4 +1,168 @@
-<h1>Admin Dashboard</h1>
-<a href="/admin/register">Register New Member</a>
-<a href="/admin/change-password">Change Password</a><br>
-<a href="/logout">Logout</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            background: #f4f4f9;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 120px;
+            background: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            height: 100%;
+            transition: width 0.3s;
+            overflow: hidden;
+        }
+
+        .sidebar:hover {
+            width: 250px;
+        }
+
+        /* Logo Holder */
+        .logo-holder {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border: 3px solid #fff;
+        }
+
+        .logo-holder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Navigation Links */
+        .nav-item {
+            width: 100%;
+            padding: 20px 0;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            transition: background 0.3s;
+            padding-left: 30px;
+        }
+
+        .nav-item:hover {
+            background: #34495e;
+        }
+
+        .nav-item i {
+            font-size: 35px;
+            transition: transform 0.3s;
+            text-align: center;
+            display: block;
+            margin-right: 15px;
+            transform: translateX(0);
+        }
+
+        /* Move Icon Left Slightly */
+        .sidebar:hover .nav-item i {
+            transform: translateX(-10px);
+        }
+
+        /* Labels Beside Icons */
+        .nav-text {
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: opacity 0.3s, transform 0.3s;
+            font-size: 18px;
+            color: white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-align: left;
+            width: max-content;
+        }
+
+        /* Labels Appear on Sidebar Hover */
+        .sidebar:hover .nav-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Link Styles */
+        .nav-text a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 120px;
+            padding: 30px;
+            transition: margin-left 0.3s;
+        }
+
+        /* Shift Content when Sidebar Expands */
+        .sidebar:hover ~ .main-content {
+            margin-left: 250px;
+        }
+
+        .main-content h1 {
+            color: #333;
+        }
+
+        .main-content p {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <!-- Logo Holder -->
+        <div class="logo-holder">
+            <img src="/images/logo.jpg" alt="Logo">
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="nav-item">
+            <i class="fa-regular fa-rectangle-list"></i>
+            <span class="nav-text"><a href="/admin/register">Register</a></span>
+        </div>
+        <div class="nav-item">
+            <i class="fa-solid fa-shop-lock"></i>
+            <span class="nav-text"><a href="/admin/change-password">Change Password</a></span>
+        </div>
+        <div class="nav-item">
+            <i class="fa-solid fa-circle-left"></i>
+            <span class="nav-text"><a href="/logout">Logout</a></span>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <h1>Welcome, Admin!</h1>
+        <p>Select an option from the sidebar to get started.</p>
+    </div>
+</body>
+</html>
