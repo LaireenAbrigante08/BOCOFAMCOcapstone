@@ -41,6 +41,50 @@ exports.registerMember = async (req, res) => {
         res.status(500).render('admin/register', { error: "Something went wrong!" });
     }
 };
+// Render the change password page
+exports.renderChangePasswordPage = (req, res) => {
+    if (!req.session.user || req.session.user.role !== 'admin') {
+        return res.redirect('/login');
+    }
+    res.render('admin/change-password', { error: null, success: null });
+};
 
+// Update admin password
+exports.updatePassword = async (req, res) => {
+    try {
+        const { currentPassword, newPassword, confirmPassword } = req.body;
+        const userId = req.session.user.user_id;
+
+        if (newPassword !== confirmPassword) {
+            return res.render('admin/change-password', { error: "Passwords do not match", success: null });
+        }
+
+        // Find admin by user_id
+        User.findByUserId(userId, async (err, user) => {
+            if (err || !user) {
+                return res.render('admin/change-password', { error: "User not found", success: null });
+            }
+
+            // Check if the current password matches
+            const isMatch = await bcrypt.compare(currentPassword, user.password);
+            if (!isMatch) {
+                return res.render('admin/change-password', { error: "Current password is incorrect", success: null });
+            }
+
+            // Hash new password and update
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            User.updatePassword(userId, hashedPassword, (err) => {
+                if (err) {
+                    console.error("Error updating password:", err);
+                    return res.render('admin/change-password', { error: "Error updating password", success: null });
+                }
+                res.render('admin/change-password', { error: null, success: "Password updated successfully!" });
+            });
+        });
+    } catch (error) {
+        console.error("Password change error:", error);
+        res.render('admin/change-password', { error: "Something went wrong!", success: null });
+    }
+};
 // Ensure module.exports includes all functions
 module.exports = exports;
