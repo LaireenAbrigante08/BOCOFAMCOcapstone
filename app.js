@@ -2,28 +2,11 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
-const mysql = require('mysql2');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const memberRoutes = require('./routes/memberRoutes');
 
 const app = express();
-
-// Database Connection
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'capstone1'
-});
-
-db.connect((err) => {
-    if (err) {
-        console.error('❌ Database connection failed:', err);
-        return;
-    }
-    console.log('✅ Connected to the database');
-});
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -37,6 +20,7 @@ app.use(session({
 
 // Serve Static Files (CSS, JS, Images)
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Set EJS as templating engine
 app.set('view engine', 'ejs');
