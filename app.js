@@ -5,7 +5,7 @@ const path = require('path');
 const mysql = require('mysql2');
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-const memberRoutes = require('./routes/memberRoutes'); // Import member routes
+const memberRoutes = require('./routes/memberRoutes');
 
 const app = express();
 
@@ -31,12 +31,22 @@ app.use(bodyParser.json());
 app.use(session({
     secret: 'secretkey',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: { secure: false } // Set to true if using HTTPS
 }));
+
+// Serve Static Files (CSS, JS, Images)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Set EJS as templating engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+// Debugging middleware to log incoming requests
+app.use((req, res, next) => {
+    console.log(`📌 ${req.method} request to ${req.url}`);
+    next();
+});
 
 // Routes
 app.use('/', authRoutes);
@@ -46,11 +56,12 @@ app.use('/member', memberRoutes);
 // Default route
 app.get('/', (req, res) => res.redirect('/login'));
 
-// 404 Error Handling
+// 404 Error Handling (Improved)
 app.use((req, res) => {
-    res.status(404).send('404 Not Found');
+    console.error(`❌ 404 Not Found: ${req.method} ${req.url}`);
+    res.status(404).render('404', { url: req.url });
 });
 
-// Server Start
-const PORT = 3000;
+// Start Server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
