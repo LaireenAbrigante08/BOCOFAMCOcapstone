@@ -54,6 +54,7 @@
         .show-password {
             display: flex;
             align-items: center;
+            justify-content: start;
             margin-top: 5px;
         }
         .show-password input {
@@ -72,11 +73,11 @@
         <% } %>
 
         <form action="/login" method="POST">
-            <label for="username">Username:</label>
-            <input type="text" name="username" id="username" required>
+            <label>User ID:</label>
+            <input type="text" name="user_id" required><br>
 
-            <label for="password">Password:</label>
-            <input type="password" name="password" id="password" required>
+            <label>Password:</label>
+            <input type="password" id="password" name="password" required><br>
 
             <div class="show-password">
                 <input type="checkbox" id="showPassword">
