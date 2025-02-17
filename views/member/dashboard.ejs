@@ -32,12 +32,17 @@
             transition: width 0.3s;
             overflow: hidden;
         }
-
+        .nav-text a {
+              color: white;
+              text-decoration: none;
+        }
+        .nav-text a:hover {
+             color: #ccc;
+        }
         .sidebar:hover {
             width: 250px;
         }
 
-        /* Logo Holder */
         .logo-holder {
             width: 80px;
             height: 80px;
@@ -53,7 +58,6 @@
             object-fit: cover;
         }
 
-        /* Navigation Links */
         .nav-item {
             width: 100%;
             padding: 20px 0;
@@ -80,12 +84,10 @@
             transform: translateX(0);
         }
 
-        /* Move Icon Left Slightly */
         .sidebar:hover .nav-item i {
             transform: translateX(-10px);
         }
 
-        /* Labels Beside Icons */
         .nav-text {
             opacity: 0;
             transform: translateX(-10px);
@@ -98,23 +100,11 @@
             width: max-content;
         }
 
-        /* Labels Appear on Sidebar Hover */
         .sidebar:hover .nav-text {
             opacity: 1;
             transform: translateX(0);
         }
 
-        /* Link Styles */
-        .nav-text a {
-            color: white;
-            text-decoration: none;
-        }
-
-        .nav-text a:hover {
-            text-decoration: underline;
-        }
-
-        /* Main Content Styles */
         .main-content {
             flex: 1;
             margin-left: 120px;
@@ -122,17 +112,47 @@
             transition: margin-left 0.3s;
         }
 
-        /* Shift Content when Sidebar Expands */
         .sidebar:hover ~ .main-content {
             margin-left: 250px;
         }
 
-        .main-content h1 {
-            color: #333;
+        .content-section {
+            display: none;
         }
 
-        .main-content p {
-            color: #555;
+        .content-section.active {
+            display: block;
+        }
+
+        /* Form Styles */
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        form input[type="text"],
+        form input[type="password"],
+        form input[type="date"],
+        form input[type="email"],
+        form textarea,
+        form select,
+        form button {
+            display: block;
+            width: 25%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        form button {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        form button:hover {
+            background-color: #34495e;
         }
     </style>
 </head>
@@ -145,9 +165,13 @@
         </div>
 
         <!-- Navigation Links -->
-        <div class="nav-item">
+        <div class="nav-item" onclick="showSection('welcome')">
+            <i class="fa-solid fa-tachograph-digital"></i>
+            <span class="nav-text"><a href="#">Dashboard</a></span>
+        </div>
+        <div class="nav-item" onclick="showSection('change-password')">
             <i class="fa-solid fa-shop-lock"></i>
-            <span class="nav-text"><a href="/member/change-password">Change Password</a></span>
+            <span class="nav-text"><a href="#">Change Password</a></span>
         </div>
         <div class="nav-item">
             <i class="fa-solid fa-circle-left"></i>
@@ -157,9 +181,33 @@
 
     <!-- Main Content Area -->
     <div class="main-content">
-        <h1>Welcome, Member!</h1>
-        <p>Select an option from the sidebar to get started.</p>
+        <!-- Welcome Section -->
+        <div class="content-section active" id="welcome">
+            <h1>Welcome, Member!</h1>
+            <p>Select an option from the sidebar to get started.</p>
+        </div>
+        <!-- Change Password Section -->
+        <div class="content-section" id="change-password">
+            <h2>Change Password</h2>
+            <form action="/member/change-password" method="POST">
+                <label>Current Password:</label>
+                <input type="password" name="currentPassword" required>
+                <label>New Password:</label>
+                <input type="password" name="newPassword" required>
+                <label>Confirm New Password:</label>
+                <input type="password" name="confirmPassword" required>
+                <button type="submit">Update Password</button>
+            </form>
+        </div>
     </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+    </script>
 </body>
 </html>
-
