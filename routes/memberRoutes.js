@@ -13,7 +13,7 @@ const isAuthenticatedMember = (req, res, next) => {
 // Member Dashboard Route
 router.get('/dashboard', isAuthenticatedMember, (req, res) => {
     res.render('member/dashboard', { 
-        user_id: req.session.user.user_id,
+        cb_number: req.session.user.cb_number,
         username: req.session.user.username // Ensure username is passed
     });
 });

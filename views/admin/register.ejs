@@ -3,33 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Register</title>
+    <title>BOCOFAMCO ID Form</title>
 </head>
 <body>
-    <h2>Register a New Member</h2>
+    <h2>BOCOFAMCO ID Form</h2>
 
     <% if (error) { %>
         <p style="color: red;"><%= error %></p>
     <% } %>
 
     <form action="/admin/register" method="POST">
-        <label>User ID:</label>
-        <input type="text" name="user_id" required><br>
+        <label>CB Number:</label>
+        <input type="text" name="cb_number" required><br>
 
-        <label>Password:</label>
-        <input type="password" name="password" required><br>
-    
-        <label>Role:</label>
-        <select name="role">
-            <option value="member">Member</option>
-            <option value="admin">Admin</option>
-        </select><br>
-    
         <label>First Name:</label>
         <input type="text" name="first_name" required><br>
-    
-        <label>Middle Name:</label>
-        <input type="text" name="middle_name"><br>
     
         <label>Last Name:</label>
         <input type="text" name="last_name" required><br>
@@ -37,22 +25,27 @@
         <label>Address:</label>
         <textarea name="address" required></textarea><br>
     
-        <label>Date of Birth:</label>
-        <input type="date" name="dob" required><br>
+        <label>Beneficiaries:</label>
+        <input type="text" name="beneficiary_1" required><br>
+        <input type="text" name="beneficiary_2"><br>
     
-        <label>Email:</label>
-        <input type="email" name="email" required><br>
+        <h3>In Case of Emergency Contact:</h3>
+        <label>Name:</label>
+        <input type="text" name="emergency_name" required><br>
     
-        <label>Gender:</label>
-        <select name="gender">
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select><br>
+        <label>Relationship:</label>
+        <input type="text" name="emergency_relationship" required><br>
     
-        <label>Contact Number:</label>
-        <input type="text" name="contact_number" required><br>
+        <label>Address:</label>
+        <textarea name="emergency_address" required></textarea><br>
     
-        <button type="submit">Register</button>
+        <label>Contact No.:</label>
+        <input type="text" name="emergency_contact" required><br>
+    
+        <label>Date Issued:</label>
+        <input type="date" name="date_issued" required><br>
+    
+        <button type="submit">Submit</button>
     </form>    
 </body>
 </html>

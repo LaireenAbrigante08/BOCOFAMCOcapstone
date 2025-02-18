@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `members` (
   `id` int(11) NOT NULL,
-  `user_id` varchar(50) NOT NULL,
+  `cb_number` varchar(50) NOT NULL,
   `first_name` varchar(100) NOT NULL,
   `middle_name` varchar(100) DEFAULT NULL,
   `last_name` varchar(100) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `members` (
 -- Dumping data for table `members`
 --
 
-INSERT INTO `members` (`id`, `user_id`, `first_name`, `middle_name`, `last_name`, `address`, `dob`, `email`, `gender`, `contact_number`) VALUES
+INSERT INTO `members` (`id`, `cb_number`, `first_name`, `middle_name`, `last_name`, `address`, `dob`, `email`, `gender`, `contact_number`) VALUES
 (1, 'Eman123', 'Emmanuel', 'Manalo', 'Abrigante', 'Sta Rita Calapan City', '2000-12-12', 'Eman@gmail.com', 'Male', '09287032144'),
 (2, 'Kert123', 'Kert', 'Sese', 'Manalo', 'Sta. Rita. Calapan City', '2005-02-16', 'kert@gmail.com', 'Male', '09876543212'),
 (3, 'Reyven123', 'reyven', 'Bonak', 'manalo', 'labiang 2', '2000-12-12', 'pangit@gmail.com', 'Male', '09876543212');
@@ -57,7 +57,7 @@ INSERT INTO `members` (`id`, `user_id`, `first_name`, `middle_name`, `last_name`
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
-  `user_id` varchar(50) NOT NULL,
+  `cb_number` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` enum('admin','member') NOT NULL DEFAULT 'member',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -67,7 +67,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `user_id`, `password`, `role`, `created_at`) VALUES
+INSERT INTO `users` (`id`, `cb_number`, `password`, `role`, `created_at`) VALUES
 (3, 'ADMIN_NEW', '$2b$10$GaV/JApi108ShGJXxjSQOODYLpIAB6z60mN2VMuxFSqG/278SPygm', 'admin', '2025-02-16 01:57:41'),
 (4, 'Lai123', '$2b$10$1/bD0natxn8DUP08NW2zk.2FYiiry19KO9.lClMPbmitZ98Ywyt9q', 'member', '2025-02-16 02:11:41'),
 (5, 'Jen123', '$2b$10$h0PMgksma9ZWY4R7d.kk6e3E0DeM.wOpFLbHDZeVl3Y6GX/OK/LiW', 'member', '2025-02-16 04:07:50'),
@@ -84,14 +84,14 @@ INSERT INTO `users` (`id`, `user_id`, `password`, `role`, `created_at`) VALUES
 --
 ALTER TABLE `members`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_id` (`user_id`);
+  ADD UNIQUE KEY `cb_number` (`cb_number`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `user_id` (`user_id`);
+  ADD UNIQUE KEY `cb_number` (`cb_number`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -117,8 +117,8 @@ ALTER TABLE `users`
 -- Constraints for table `members`
 --
 ALTER TABLE `members`
-  ADD CONSTRAINT `fk_members_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `members_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_members_users` FOREIGN KEY (`cb_number`) REFERENCES `users` (`cb_number`) ON DELETE CASCADE,
+  ADD CONSTRAINT `members_ibfk_1` FOREIGN KEY (`cb_number`) REFERENCES `users` (`cb_number`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

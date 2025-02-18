@@ -14,7 +14,7 @@ bcrypt.hash(newPassword, 10, (err, hash) => {
         console.error('❌ Error hashing password:', err);
     } else {
         db.query(
-            'UPDATE users SET password = ? WHERE user_id = ?',
+            'UPDATE users SET password = ? WHERE cb_number = ?',
             [hash, 'ADMIN12345'],
             (err, result) => {
                 if (err) {

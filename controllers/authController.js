@@ -9,16 +9,16 @@ exports.showLoginPage = (req, res) => {
 
 // Login Function
 exports.login = (req, res) => {
-  const { user_id, password } = req.body; 
+  const { cb_number, password } = req.body; 
 
-  console.log('🟡 Login Attempt:', user_id);
+  console.log('🟡 Login Attempt:', cb_number);
 
-  if (!user_id || !password) {
+  if (!cb_number || !password) {
     return res.render('login', { error: 'User ID and password are required' });
   }
 
-  const sql = 'SELECT * FROM users WHERE user_id = ?';
-  db.query(sql, [user_id], (err, results) => {
+  const sql = 'SELECT * FROM users WHERE cb_number = ?';
+  db.query(sql, [cb_number], (err, results) => {
     if (err) {
       console.error('❌ Database error:', err);
       return res.render('login', { error: 'An unexpected error occurred' });
@@ -26,12 +26,12 @@ exports.login = (req, res) => {
 
     console.log('🔍 SQL Result:', results);
     if (results.length === 0) {
-      console.log('❌ User ID not found:', user_id);
+      console.log('❌ User ID not found:', cb_number);
       return res.render('login', { error: 'Invalid User ID or password' });
     }
 
     const user = results[0];
-    console.log('✅ User Found:', user.user_id, '| Role:', user.role);
+    console.log('✅ User Found:', user.cb_number, '| Role:', user.role);
 
     // Compare password
     bcrypt.compare(password, user.password, (err, isMatch) => {
@@ -41,12 +41,12 @@ exports.login = (req, res) => {
       }
 
       if (!isMatch) {
-        console.log('❌ Incorrect password for:', user_id);
+        console.log('❌ Incorrect password for:', cb_number);
         return res.render('login', { error: 'Invalid User ID or password' });
       }
 
       // Store session
-      req.session.user = { id: user.id, user_id: user.user_id, role: user.role };
+      req.session.user = { id: user.id, cb_number: user.cb_number, role: user.role };
       console.log('✅ Session Data:', req.session.user);
 
       // Redirect based on role
@@ -62,9 +62,9 @@ exports.showRegisterPage = (req, res) => {
 
 // Register New User
 exports.registerUser = (req, res) => {
-  const { user_id, password, role } = req.body; 
+  const { cb_number, password, role } = req.body; 
 
-  if (!user_id || !password || !role) {
+  if (!cb_number || !password || !role) {
     return res.render('register', { error: 'All fields are required' });
   }
 
@@ -74,16 +74,16 @@ exports.registerUser = (req, res) => {
       return res.render('register', { error: 'Error hashing password' });
     }
     
-    console.log('🔑 Hashed Password for', user_id, ':', hash);
+    console.log('🔑 Hashed Password for', cb_number, ':', hash);
 
-    const sql = 'INSERT INTO users (user_id, password, role) VALUES (?, ?, ?)';
-    db.query(sql, [user_id, hash, role], (err, result) => {
+    const sql = 'INSERT INTO users (cb_number, password, role) VALUES (?, ?, ?)';
+    db.query(sql, [cb_number, hash, role], (err, result) => {
       if (err) {
         console.error('❌ Database error:', err);
         return res.render('register', { error: 'Error creating account' });
       }
 
-      console.log('✅ User registered successfully:', user_id);
+      console.log('✅ User registered successfully:', cb_number);
       res.redirect('/login'); 
     });
   });
@@ -110,7 +110,7 @@ exports.handleForgotPassword = (req, res) => {
   }
 
   // Check if email exists in the members table
-  const sql = 'SELECT user_id FROM members WHERE email = ?';
+  const sql = 'SELECT cb_number FROM members WHERE email = ?';
   db.query(sql, [email], (err, results) => {
     if (err) {
       console.error('❌ Database error:', err);
@@ -127,8 +127,8 @@ exports.handleForgotPassword = (req, res) => {
     // Generate a password reset token (in a real app, you might want to expire it after a certain time)
     const resetToken = Math.random().toString(36).substring(2, 15); // Simple random token (better to use a more secure method)
     
-    // Store the token in the users table (using the member's user_id)
-    db.query('UPDATE users SET reset_token = ? WHERE user_id = ?', [resetToken, member.user_id], (err) => {
+    // Store the token in the users table (using the member's cb_number)
+    db.query('UPDATE users SET reset_token = ? WHERE cb_number = ?', [resetToken, member.cb_number], (err) => {
       if (err) {
         console.error('❌ Error saving reset token:', err);
         return res.render('forgot-password', { error: 'An error occurred while generating the reset token' });

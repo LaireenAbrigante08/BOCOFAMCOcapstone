@@ -13,7 +13,7 @@ exports.renderChangePasswordPage = (req, res) => {
 exports.updatePassword = async (req, res) => {
     try {
         const { currentPassword, newPassword, confirmPassword } = req.body;
-        const userId = req.session.user.user_id;
+        const userId = req.session.user.cb_number;
 
         if (!currentPassword || !newPassword || !confirmPassword) {
             return res.render('member/change-password', { error: "All fields are required.", success: null });
