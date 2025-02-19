@@ -17,18 +17,25 @@ exports.renderRegisterPage = (req, res) => {
 
 exports.registerMember = async (req, res) => {
     try {
-        const { user_id, password, role, first_name, middle_name, last_name, address, dob, email, gender, contact_number } = req.body;
+        const { cb_number, password, role, first_name, middle_name, last_name, 
+            address, dob, email, gender, contact_number, beneficiaries, 
+            emergency_name, emergency_relationship, emergency_address, 
+            emergency_contact, date_issued } = req.body;
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insert into users table
-        User.create(user_id, hashedPassword, role, (err) => {
+        User.create(cb_number, hashedPassword, role, (err) => {
             if (err) {
                 console.error("Error inserting into users table:", err);
                 return res.status(500).render('admin/register', { error: "Error registering user" });
             }
 
             // Insert into members table
-            Member.create(user_id, first_name, middle_name, last_name, address, dob, email, gender, contact_number, (err) => {
+            Member.create(cb_number, first_name, middle_name, last_name, 
+                address, dob, email, gender, contact_number, beneficiaries, 
+                emergency_name, emergency_relationship, emergency_address, 
+                emergency_contact, date_issued, (err) => { // Moved callback function correctly
                 if (err) {
                     console.error("Error inserting into members table:", err);
                     return res.status(500).render('admin/register', { error: "Error registering member" });
@@ -41,6 +48,7 @@ exports.registerMember = async (req, res) => {
         res.status(500).render('admin/register', { error: "Something went wrong!" });
     }
 };
+
 // Render the change password page
 exports.renderChangePasswordPage = (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
@@ -53,13 +61,13 @@ exports.renderChangePasswordPage = (req, res) => {
 exports.updatePassword = async (req, res) => {
     try {
         const { currentPassword, newPassword, confirmPassword } = req.body;
-        const userId = req.session.user.user_id;
+        const userId = req.session.user.cb_number;
 
         if (newPassword !== confirmPassword) {
             return res.render('admin/change-password', { error: "Passwords do not match", success: null });
         }
 
-        // Find admin by user_id
+        // Find admin by cb_number
         User.findByUserId(userId, async (err, user) => {
             if (err || !user) {
                 return res.render('admin/change-password', { error: "User not found", success: null });
