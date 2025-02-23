@@ -24,7 +24,6 @@
             height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 280px;
             background-color: #1d3557;
@@ -36,6 +35,8 @@
             left: 0;
             height: 100%;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            justify-content: space-between;
+            padding-bottom: 20px;
         }
 
         .sidebar .logo {
@@ -46,13 +47,12 @@
             background-color: #457b9d;
         }
 
-        .sidebar .nav {
+        .nav {
             margin-top: 20px;
-            display: flex;
-            flex-direction: column;
+            flex-grow: 1;
         }
 
-        .sidebar .nav-item {
+        .nav-item {
             padding: 15px 20px;
             display: flex;
             align-items: center;
@@ -60,79 +60,38 @@
             transition: background 0.3s;
         }
 
-        .sidebar .nav-item:hover {
+        .nav-item:hover {
             background-color: #457b9d;
         }
 
-        .sidebar .nav-item i {
+        .nav-item i {
             margin-right: 15px;
             font-size: 20px;
         }
 
-        .sidebar .nav-item span {
-            font-size: 16px;
+        .dropdown {
+            display: none;
+            flex-direction: column;
+            background-color: #2a4d69;
         }
 
-        /* Main Content */
+        .dropdown .nav-item {
+            padding-left: 40px;
+        }
+
+        .nav-bottom {
+            margin-top: auto;
+        }
+
         .main-content {
             margin-left: 280px;
             padding: 30px;
             width: calc(100% - 280px);
             overflow-y: auto;
         }
-
-        .main-content h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1d3557;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .card h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            color: #1d3557;
-        }
-
-        form label {
-            font-size: 14px;
-            color: #555;
-            margin-bottom: 5px;
-            display: block;
-        }
-
-        form input, form textarea, form select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        form button {
-            background-color: #457b9d;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        form button:hover {
-            background-color: #1d3557;
-        }
     </style>
 </head>
 <body>
-    <!-- Sidebar Navigation -->
     <div class="sidebar">
         <div class="logo">Admin Panel</div>
         <div class="nav">
@@ -140,113 +99,40 @@
                 <i class="fa-solid fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </div>
-            <div class="nav-item" onclick="showSection('register')">
-                <i class="fa-solid fa-user-plus"></i>
-                <span>Register</span>
+        </div>
+        <div class="nav-bottom">
+            <div class="nav-item" onclick="toggleDropdown('settings-dropdown')">
+                <i class="fa-solid fa-cog"></i>
+                <span>Settings</span>
+                <i class="fa-solid fa-chevron-down" style="margin-left:auto;"></i>
             </div>
-            <div class="nav-item" onclick="showSection('change-password')">
-                <i class="fa-solid fa-lock"></i>
-                <span>Change Password</span>
+            <div id="settings-dropdown" class="dropdown">
+                <div class="nav-item" onclick="window.location.href='/admin/register'">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>Register</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='/admin/change-password'">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Change Password</span>
+                </div>
             </div>
             <div class="nav-item">
                 <i class="fa-solid fa-sign-out-alt"></i>
                 <a href="/logout" style="color: inherit; text-decoration: none;">Logout</a>
-            </div>            
+            </div>
         </div>
     </div>
 
-    <!-- Main Content Area -->
     <div class="main-content">
-        <!-- Dashboard Section -->
         <div class="card" id="dashboard">
             <h1>Welcome, Admin!</h1>
             <p>Navigate through the sidebar to manage the system effectively.</p>
         </div>
-
-        <!-- Register Section -->
         <div class="card" id="register" style="display: none;">
             <h2>Register a New Member</h2>
-            <form action="/admin/register" method="POST">
-                <label for="cb_number">CB Number:</label>
-                <input type="text" id="cb_number" name="cb_number" required>
-            
-                <label for="first_name">First Name:</label>
-                <input type="text" id="first_name" name="first_name" required>
-            
-                <label for="middle_name">Middle Name:</label>
-                <input type="text" id="middle_name" name="middle_name">
-            
-                <label for="last_name">Last Name:</label>
-                <input type="text" id="last_name" name="last_name" required>
-            
-                <label for="address">Address:</label>
-                <textarea id="address" name="address" required></textarea>
-            
-                <label for="dob">Date of Birth:</label>
-                <input type="date" id="dob" name="dob" required>
-            
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email">
-            
-                <label for="gender">Gender:</label>
-                <select id="gender" name="gender">
-                    <option value="">-- Select Gender --</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                </select>
-            
-                <label for="contact_number">Contact Number:</label>
-                <input type="text" id="contact_number" name="contact_number" pattern="[0-9]{10,}" title="Enter a valid 10-digit number">
-            
-                <label for="role">Role:</label>
-                <select id="role" name="role" required>
-                    <option value="member">Member</option>
-                    <option value="admin">Admin</option>
-                </select>
-            
-                <label>Beneficiaries:</label>
-                <input type="text" name="beneficiaries[]" placeholder="Beneficiary 1">
-                <input type="text" name="beneficiaries[]" placeholder="Beneficiary 2">
-            
-                <h3>Emergency Contact</h3>
-                <label for="emergency_name">Name:</label>
-                <input type="text" id="emergency_name" name="emergency_name" required>
-            
-                <label for="emergency_relationship">Relationship:</label>
-                <input type="text" id="emergency_relationship" name="emergency_relationship" required>
-            
-                <label for="emergency_address">Address:</label>
-                <textarea id="emergency_address" name="emergency_address"></textarea>
-            
-                <label for="emergency_contact">Contact Number:</label>
-                <input type="text" id="emergency_contact" name="emergency_contact" pattern="[0-9]{10,}" title="Enter a valid 10-digit number" required>
-            
-                <label for="date_issued">Date Issued:</label>
-                <input type="date" id="date_issued" name="date_issued" required>
-            
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            
-                <button type="submit">Register</button>
-            </form>            
         </div>
-
-        <!-- Change Password Section -->
         <div class="card" id="change-password" style="display: none;">
             <h2>Change Password</h2>
-            <form action="/admin/change-password" method="POST">
-                <label>Current Password:</label>
-                <input type="password" name="currentPassword" required>
-
-                <label>New Password:</label>
-                <input type="password" name="newPassword" required>
-
-                <label>Confirm New Password:</label>
-                <input type="password" name="confirmPassword" required>
-
-                <button type="submit">Update Password</button>
-            </form>
         </div>
     </div>
 
@@ -256,6 +142,11 @@
                 section.style.display = 'none';
             });
             document.getElementById(sectionId).style.display = 'block';
+        }
+
+        function toggleDropdown(dropdownId) {
+            let dropdown = document.getElementById(dropdownId);
+            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
         }
     </script>
 </body>
