@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOCOFAMCO ID Form</title>
-
-    <!-- Bootstrap for Styling -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<%- include('../partials/adminsidebar') %>
 
     <style>
         body {
@@ -136,6 +127,229 @@
             <div class="mb-3">
                 <label for="password" class="form-label">Password:</label>
                 <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+
+            <!-- New Fields -->
+            <div class="mb-3">
+                <label for="nickname" class="form-label">Nickname:</label>
+                <input type="text" id="nickname" name="nickname" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="civil_status" class="form-label">Civil Status:</label>
+                <input type="text" id="civil_status" name="civil_status" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="age" class="form-label">Age:</label>
+                <input type="number" id="age" name="age" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="place_of_birth" class="form-label">Place of Birth:</label>
+                <input type="text" id="place_of_birth" name="place_of_birth" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="nationality" class="form-label">Nationality:</label>
+                <input type="text" id="nationality" name="nationality" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="religion" class="form-label">Religion:</label>
+                <input type="text" id="religion" name="religion" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="spouse_name" class="form-label">Spouse Name:</label>
+                <input type="text" id="spouse_name" name="spouse_name" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="spouse_age" class="form-label">Spouse Age:</label>
+                <input type="number" id="spouse_age" name="spouse_age" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="spouse_occupation" class="form-label">Spouse Occupation:</label>
+                <input type="text" id="spouse_occupation" name="spouse_occupation" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="father_name" class="form-label">Father's Name:</label>
+                <input type="text" id="father_name" name="father_name" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="mother_name" class="form-label">Mother's Name:</label>
+                <input type="text" id="mother_name" name="mother_name" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="parent_address" class="form-label">Parent's Address:</label>
+                <textarea id="parent_address" name="parent_address" class="form-control"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="number_of_children" class="form-label">Number of Children:</label>
+                <input type="number" id="number_of_children" name="number_of_children" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="children_info" class="form-label">Children Info:</label>
+                <textarea id="children_info" name="children_info" class="form-control"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="educational_attainment" class="form-label">Educational Attainment:</label>
+                <input type="text" id="educational_attainment" name="educational_attainment" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="occupation" class="form-label">Occupation:</label>
+                <input type="text" id="occupation" name="occupation" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="other_income" class="form-label">Other Income:</label>
+                <input type="text" id="other_income" name="other_income" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="annual_income" class="form-label">Annual Income:</label>
+                <input type="number" id="annual_income" name="annual_income" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="elementary_school" class="form-label">Elementary School:</label>
+                <input type="text" id="elementary_school" name="elementary_school" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="elementary_address" class="form-label">Elementary School Address:</label>
+                <input type="text" id="elementary_address" name="elementary_address" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="elementary_year_graduated" class="form-label">Elementary Year Graduated:</label>
+                <input type="text" id="elementary_year_graduated" name="elementary_year_graduated" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="secondary_school" class="form-label">Secondary School:</label>
+                <input type="text" id="secondary_school" name="secondary_school" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="secondary_address" class="form-label">Secondary School Address:</label>
+                <input type="text" id="secondary_address" name="secondary_address" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="secondary_year_graduated" class="form-label">Secondary Year Graduated:</label>
+                <input type="text" id="secondary_year_graduated" name="secondary_year_graduated" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="college_school" class="form-label">College School:</label>
+                <input type="text" id="college_school" name="college_school" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="college_address" class="form-label">College School Address:</label>
+                <input type="text" id="college_address" name="college_address" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="college_year_graduated" class="form-label">College Year Graduated:</label>
+                <input type="text" id="college_year_graduated" name="college_year_graduated" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="vocational_school" class="form-label">Vocational School:</label>
+                <input type="text" id="vocational_school" name="vocational_school" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="vocational_address" class="form-label">Vocational School Address:</label>
+                <input type="text" id="vocational_address" name="vocational_address" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="vocational_year_graduated" class="form-label">Vocational Year Graduated:</label>
+                <input type="text" id="vocational_year_graduated" name="vocational_year_graduated" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="membership_date" class="form-label">Membership Date:</label>
+                <input type="date" id="membership_date" name="membership_date" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="cooperative_position" class="form-label">Cooperative Position:</label>
+                <input type="text" id="cooperative_position" name="cooperative_position" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="emergency_contact_name" class="form-label">Emergency Contact Name:</label>
+                <input type="text" id="emergency_contact_name" name="emergency_contact_name" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="emergency_contact_address" class="form-label">Emergency Contact Address:</label>
+                <textarea id="emergency_contact_address" name="emergency_contact_address" class="form-control"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="relation" class="form-label">Relation:</label>
+                <input type="text" id="relation" name="relation" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="agrarian_beneficiary" class="form-label">Agrarian Beneficiary:</label>
+                <select id="agrarian_beneficiary" name="agrarian_beneficiary" class="form-select">
+                    <option value="">-- Select --</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="farm_area" class="form-label">Farm Area:</label>
+                <input type="number" id="farm_area" name="farm_area" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="farm_type" class="form-label">Farm Type:</label>
+                <select id="farm_type" name="farm_type" class="form-select">
+                    <option value="">-- Select --</option>
+                    <option value="Irrigated">Irrigated</option>
+                    <option value="Rainfed">Rainfed</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="is_tenant" class="form-label">Is Tenant:</label>
+                <select id="is_tenant" name="is_tenant" class="form-select">
+                    <option value="">-- Select --</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="recruited_by" class="form-label">Recruited By:</label>
+                <input type="text" id="recruited_by" name="recruited_by" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="signature" class="form-label">Signature:</label>
+                <input type="text" id="signature" name="signature" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="signed_date" class="form-label">Signed Date:</label>
+                <input type="date" id="signed_date" name="signed_date" class="form-control">
             </div>
 
             <button type="submit" class="btn btn-primary w-100">Register</button>

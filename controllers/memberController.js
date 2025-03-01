@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const User = require('../models/Member'); // Ensure this model has the correct methods
+const Member = require('../models/member'); // Ensure this model has the correct methods
 
 // Render the change password page
 exports.renderChangePasswordPage = (req, res) => {
@@ -13,7 +13,7 @@ exports.renderChangePasswordPage = (req, res) => {
 exports.updatePassword = async (req, res) => {
     try {
         const { currentPassword, newPassword, confirmPassword } = req.body;
-        const userId = req.session.user.cb_number;
+        const userId = req.session.user.id; // Use ID instead of cb_number
 
         if (!currentPassword || !newPassword || !confirmPassword) {
             return res.render('member/change-password', { error: "All fields are required.", success: null });
@@ -23,24 +23,50 @@ exports.updatePassword = async (req, res) => {
             return res.render('member/change-password', { error: "New passwords do not match.", success: null });
         }
 
-        const user = await User.findByUserId(userId);
-        if (!user) {
+        const member = await Member.findById(userId); // Find by ID
+        if (!member) {
             return res.render('member/change-password', { error: "User not found.", success: null });
         }
 
-        // Compare current password with the stored hashed password
-        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        // Compare current password with stored hashed password
+        const isMatch = await bcrypt.compare(currentPassword, member.password);
         if (!isMatch) {
             return res.render('member/change-password', { error: "Current password is incorrect.", success: null });
         }
 
-        // Hash the new password before saving
+        // Hash new password before saving
         const hashedPassword = await bcrypt.hash(newPassword, 10);
-        await User.updatePassword(userId, hashedPassword);
+        await Member.updatePassword(userId, hashedPassword); // Update password
 
         return res.render('member/change-password', { error: null, success: "Password updated successfully!" });
     } catch (error) {
         console.error("Password change error:", error);
         return res.render('member/change-password', { error: "Something went wrong! Please try again.", success: null });
+    }
+};
+
+// Get Profile
+exports.getProfile = async (req, res) => {
+    console.log("Session Data:", req.session);
+
+    if (!req.session.user || !req.session.user.cb_number) {
+        console.log("User not logged in, redirecting to /login");
+        return res.redirect('/login');
+    }
+
+    try {
+        const cb_number = req.session.user.cb_number;
+        console.log("Fetching profile for CB Number:", cb_number);
+
+        const [member] = await Member.findByCbNumber(cb_number);
+
+        if (!member) {
+            return res.status(404).send('Member not found');
+        }
+
+        res.render('member/profile', { member });
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+        res.status(500).send('Server Error');
     }
 };

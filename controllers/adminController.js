@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
-const Member = require('../models/Member');
+
 
 exports.adminDashboard = (req, res) => {
     if (!req.session.user || req.session.user.role !== 'admin') {
@@ -17,10 +17,23 @@ exports.renderRegisterPage = (req, res) => {
 
 exports.registerMember = async (req, res) => {
     try {
-        const { cb_number, password, role, first_name, middle_name, last_name, 
+        const { 
+            cb_number, password, role, first_name, middle_name, last_name, 
             address, dob, email, gender, contact_number, beneficiaries, 
             emergency_name, emergency_relationship, emergency_address, 
-            emergency_contact, date_issued } = req.body;
+            emergency_contact, date_issued, nickname, civil_status, age, 
+            place_of_birth, nationality, religion, spouse_name, spouse_age, 
+            spouse_occupation, father_name, mother_name, parent_address, 
+            number_of_children, children_info, educational_attainment, 
+            occupation, other_income, annual_income, elementary_school, 
+            elementary_address, elementary_year_graduated, secondary_school, 
+            secondary_address, secondary_year_graduated, college_school, 
+            college_address, college_year_graduated, vocational_school, 
+            vocational_address, vocational_year_graduated, membership_date, 
+            cooperative_position, emergency_contact_name, emergency_contact_address, 
+            relation, agrarian_beneficiary, farm_area, farm_type, is_tenant, 
+            recruited_by, signature, signed_date 
+        } = req.body;
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -32,16 +45,28 @@ exports.registerMember = async (req, res) => {
             }
 
             // Insert into members table
-            Member.create(cb_number, first_name, middle_name, last_name, 
-                address, dob, email, gender, contact_number, beneficiaries, 
-                emergency_name, emergency_relationship, emergency_address, 
-                emergency_contact, date_issued, (err) => { // Moved callback function correctly
-                if (err) {
-                    console.error("Error inserting into members table:", err);
-                    return res.status(500).render('admin/register', { error: "Error registering member" });
+            Member.create(
+                cb_number, first_name, middle_name, last_name, address, dob, email, 
+                gender, contact_number, beneficiaries, emergency_name, emergency_relationship, 
+                emergency_address, emergency_contact, date_issued, nickname, civil_status, 
+                age, place_of_birth, nationality, religion, spouse_name, spouse_age, 
+                spouse_occupation, father_name, mother_name, parent_address, 
+                number_of_children, children_info, educational_attainment, occupation, 
+                other_income, annual_income, elementary_school, elementary_address, 
+                elementary_year_graduated, secondary_school, secondary_address, 
+                secondary_year_graduated, college_school, college_address, 
+                college_year_graduated, vocational_school, vocational_address, 
+                vocational_year_graduated, membership_date, cooperative_position, 
+                emergency_contact_name, emergency_contact_address, relation, 
+                agrarian_beneficiary, farm_area, farm_type, is_tenant, recruited_by, 
+                signature, signed_date, (err) => {
+                    if (err) {
+                        console.error("Error inserting into members table:", err);
+                        return res.status(500).render('admin/register', { error: "Error registering member" });
+                    }
+                    res.redirect('/admin/dashboard');
                 }
-                res.redirect('/admin/dashboard');
-            });
+            );
         });
     } catch (error) {
         console.error("Registration error:", error);

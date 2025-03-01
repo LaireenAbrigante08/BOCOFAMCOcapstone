@@ -1,227 +1,243 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Member Profile Form</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<%- include('../partials/membersidebar') %>
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
             padding: 20px;
         }
-        .profile-form {
+        .profile-container {
             max-width: 800px;
             margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        .profile-form h2 {
-            margin-bottom: 20px;
+        .profile-header {
             text-align: center;
+            margin-bottom: 30px;
         }
-        .profile-form label {
-            font-weight: bold;
+        .profile-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #333;
+            font-weight: 600;
+        }
+        .profile-header p {
+            margin: 5px 0;
+            color: #777;
+            font-size: 1.1rem;
+        }
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
             display: block;
-            margin-top: 10px;
+            border: 4px solid #007bff;
         }
-        .profile-form input,
-        .profile-form select,
-        .profile-form textarea {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 600;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 5px;
         }
-        .profile-form button {
+        .profile-details p {
+            margin: 10px 0;
+            color: #555;
+            font-size: 1rem;
+        }
+        .profile-details strong {
+            color: #333;
+            font-weight: 600;
+        }
+        .profile-section {
+            margin-bottom: 30px;
+        }
+        .profile-section:last-child {
+            margin-bottom: 0;
+        }
+        .profile-details p {
+            padding-left: 10px;
+            border-left: 3px solid #007bff;
+        }
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+        }
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
             margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #1d3557;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
         }
-        .profile-form button:hover {
-            background-color: #457b9d;
+        .form-navigation button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        .form-navigation button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
-    <div class="profile-form">
-        <h2>Member Profile Form</h2>
-        <form action="/save-profile" method="POST">
-            <!-- Personal Information -->
-            <label for="cb_number">CB Number:</label>
-            <input type="text" id="cb_number" name="cb_number" required>
+    <%- include('../partials/membersidebar') %>
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <% if (member.profile_picture) { %>
+                <img src="<%= member.profile_picture %>" alt="Profile Picture" class="profile-picture">
+            <% } else { %>
+                <img src="/images/default-profile.png" alt="Default Profile Picture" class="profile-picture">
+            <% } %>
+            <h1><%= member.first_name %> <%= member.middle_name %> <%= member.last_name %></h1>
+            <p><%= member.cooperative_position %></p>
+        </div>
 
-            <label for="nickname">Nickname:</label>
-            <input type="text" id="nickname" name="nickname">
+        <!-- Multi-Step Form -->
+        <form id="profileForm">
+            <!-- Step 1: Personal Information -->
+            <div class="form-step active" id="step1">
+                <h2 class="section-title">Personal Information</h2>
+                <div class="profile-details">
+                    <p><strong>CB Number:</strong> <%= member.cb_number %></p>
+                    <p><strong>Date of Birth:</strong> <%= member.dob %></p>
+                    <p><strong>Gender:</strong> <%= member.gender %></p>
+                    <p><strong>Civil Status:</strong> <%= member.civil_status %></p>
+                    <p><strong>Age:</strong> <%= member.age %></p>
+                    <p><strong>Place of Birth:</strong> <%= member.place_of_birth %></p>
+                    <p><strong>Nationality:</strong> <%= member.nationality %></p>
+                    <p><strong>Religion:</strong> <%= member.religion %></p>
+                    <p><strong>Address:</strong> <%= member.address %></p>
+                    <p><strong>Contact Number:</strong> <%= member.contact_number %></p>
+                    <p><strong>Email:</strong> <%= member.email %></p>
+                </div>
+            </div>
 
-            <label for="contact_number">Contact Number:</label>
-            <input type="text" id="contact_number" name="contact_number">
+            <!-- Step 2: Family Information -->
+            <div class="form-step" id="step2">
+                <h2 class="section-title">Family Information</h2>
+                <div class="profile-details">
+                    <p><strong>Spouse Name:</strong> <%= member.spouse_name %></p>
+                    <p><strong>Spouse Age:</strong> <%= member.spouse_age %></p>
+                    <p><strong>Spouse Occupation:</strong> <%= member.spouse_occupation %></p>
+                    <p><strong>Father's Name:</strong> <%= member.father_name %></p>
+                    <p><strong>Mother's Name:</strong> <%= member.mother_name %></p>
+                    <p><strong>Parent's Address:</strong> <%= member.parent_address %></p>
+                    <p><strong>Number of Children:</strong> <%= member.number_of_children %></p>
+                    <p><strong>Children Info:</strong> <%= member.children_info %></p>
+                </div>
+            </div>
 
-            <label for="civil_status">Civil Status:</label>
-            <input type="text" id="civil_status" name="civil_status">
+            <!-- Step 3: Educational Background -->
+            <div class="form-step" id="step3">
+                <h2 class="section-title">Educational Background</h2>
+                <div class="profile-details">
+                    <p><strong>Educational Attainment:</strong> <%= member.educational_attainment %></p>
+                    <p><strong>Elementary School:</strong> <%= member.elementary_school %></p>
+                    <p><strong>Elementary Address:</strong> <%= member.elementary_address %></p>
+                    <p><strong>Elementary Year Graduated:</strong> <%= member.elementary_year_graduated %></p>
+                    <p><strong>Secondary School:</strong> <%= member.secondary_school %></p>
+                    <p><strong>Secondary Address:</strong> <%= member.secondary_address %></p>
+                    <p><strong>Secondary Year Graduated:</strong> <%= member.secondary_year_graduated %></p>
+                    <p><strong>College School:</strong> <%= member.college_school %></p>
+                    <p><strong>College Address:</strong> <%= member.college_address %></p>
+                    <p><strong>College Year Graduated:</strong> <%= member.college_year_graduated %></p>
+                    <p><strong>Vocational School:</strong> <%= member.vocational_school %></p>
+                    <p><strong>Vocational Address:</strong> <%= member.vocational_address %></p>
+                    <p><strong>Vocational Year Graduated:</strong> <%= member.vocational_year_graduated %></p>
+                </div>
+            </div>
 
-            <label for="sex">Sex:</label>
-            <select id="sex" name="sex">
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-            </select>
+            <!-- Step 4: Employment and Income -->
+            <div class="form-step" id="step4">
+                <h2 class="section-title">Employment and Income</h2>
+                <div class="profile-details">
+                    <p><strong>Occupation:</strong> <%= member.occupation %></p>
+                    <p><strong>Other Income:</strong> <%= member.other_income %></p>
+                    <p><strong>Annual Income:</strong> <%= member.annual_income %></p>
+                </div>
+            </div>
 
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age">
+            <!-- Step 5: Cooperative Information -->
+            <div class="form-step" id="step5">
+                <h2 class="section-title">Cooperative Information</h2>
+                <div class="profile-details">
+                    <p><strong>Membership Date:</strong> <%= member.membership_date %></p>
+                    <p><strong>Cooperative Position:</strong> <%= member.cooperative_position %></p>
+                    <p><strong>Recruited By:</strong> <%= member.recruited_by %></p>
+                    <p><strong>Signature:</strong> <%= member.signature %></p>
+                    <p><strong>Signed Date:</strong> <%= member.signed_date %></p>
+                </div>
+            </div>
 
-            <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" name="dob">
+            <!-- Step 6: Emergency Contact -->
+            <div class="form-step" id="step6">
+                <h2 class="section-title">Emergency Contact</h2>
+                <div class="profile-details">
+                    <p><strong>Emergency Contact Name:</strong> <%= member.emergency_contact_name %></p>
+                    <p><strong>Emergency Contact Address:</strong> <%= member.emergency_contact_address %></p>
+                    <p><strong>Relation:</strong> <%= member.relation %></p>
+                </div>
+            </div>
 
-            <label for="place_of_birth">Place of Birth:</label>
-            <input type="text" id="place_of_birth" name="place_of_birth">
+            <!-- Step 7: Agrarian Information -->
+            <div class="form-step" id="step7">
+                <h2 class="section-title">Agrarian Information</h2>
+                <div class="profile-details">
+                    <p><strong>Agrarian Beneficiary:</strong> <%= member.agrarian_beneficiary %></p>
+                    <p><strong>Farm Area:</strong> <%= member.farm_area %></p>
+                    <p><strong>Farm Type:</strong> <%= member.farm_type %></p>
+                    <p><strong>Is Tenant:</strong> <%= member.is_tenant %></p>
+                </div>
+            </div>
 
-            <label for="nationality">Nationality:</label>
-            <input type="text" id="nationality" name="nationality">
-
-            <label for="religion">Religion:</label>
-            <input type="text" id="religion" name="religion">
-
-            <!-- Spouse Information -->
-            <label for="spouse_name">Spouse Name:</label>
-            <input type="text" id="spouse_name" name="spouse_name">
-
-            <label for="spouse_age">Spouse Age:</label>
-            <input type="number" id="spouse_age" name="spouse_age">
-
-            <label for="spouse_occupation">Spouse Occupation:</label>
-            <input type="text" id="spouse_occupation" name="spouse_occupation">
-
-            <!-- Parents Information -->
-            <label for="father_name">Father's Name:</label>
-            <input type="text" id="father_name" name="father_name">
-
-            <label for="mother_name">Mother's Name:</label>
-            <input type="text" id="mother_name" name="mother_name">
-
-            <label for="parent_address">Parents' Address:</label>
-            <textarea id="parent_address" name="parent_address"></textarea>
-
-            <!-- Children Information -->
-            <label for="number_of_children">Number of Children:</label>
-            <input type="number" id="number_of_children" name="number_of_children">
-
-            <label for="children_info">Children Info (Names and Ages):</label>
-            <textarea id="children_info" name="children_info"></textarea>
-
-            <!-- Educational and Occupational Information -->
-            <label for="educational_attainment">Educational Attainment:</label>
-            <input type="text" id="educational_attainment" name="educational_attainment">
-
-            <label for="occupation">Occupation:</label>
-            <input type="text" id="occupation" name="occupation">
-
-            <label for="other_income">Other Source of Income:</label>
-            <input type="text" id="other_income" name="other_income">
-
-            <label for="annual_income">Annual Income:</label>
-            <input type="number" id="annual_income" name="annual_income" step="0.01">
-
-            <!-- Educational Background -->
-            <label for="elementary_school">Elementary School:</label>
-            <input type="text" id="elementary_school" name="elementary_school">
-
-            <label for="elementary_address">Elementary School Address:</label>
-            <input type="text" id="elementary_address" name="elementary_address">
-
-            <label for="elementary_year_graduated">Elementary Year Graduated:</label>
-            <input type="text" id="elementary_year_graduated" name="elementary_year_graduated">
-
-            <label for="secondary_school">Secondary School:</label>
-            <input type="text" id="secondary_school" name="secondary_school">
-
-            <label for="secondary_address">Secondary School Address:</label>
-            <input type="text" id="secondary_address" name="secondary_address">
-
-            <label for="secondary_year_graduated">Secondary Year Graduated:</label>
-            <input type="text" id="secondary_year_graduated" name="secondary_year_graduated">
-
-            <label for="college_school">College School:</label>
-            <input type="text" id="college_school" name="college_school">
-
-            <label for="college_address">College School Address:</label>
-            <input type="text" id="college_address" name="college_address">
-
-            <label for="college_year_graduated">College Year Graduated:</label>
-            <input type="text" id="college_year_graduated" name="college_year_graduated">
-
-            <label for="vocational_school">Vocational School:</label>
-            <input type="text" id="vocational_school" name="vocational_school">
-
-            <label for="vocational_address">Vocational School Address:</label>
-            <input type="text" id="vocational_address" name="vocational_address">
-
-            <label for="vocational_year_graduated">Vocational Year Graduated:</label>
-            <input type="text" id="vocational_year_graduated" name="vocational_year_graduated">
-
-            <!-- Cooperative Information -->
-            <label for="membership_date">Membership Date:</label>
-            <input type="date" id="membership_date" name="membership_date">
-
-            <label for="cooperative_position">Position in Cooperative:</label>
-            <input type="text" id="cooperative_position" name="cooperative_position">
-
-            <!-- Emergency Contact -->
-            <label for="emergency_contact_name">Emergency Contact Name:</label>
-            <input type="text" id="emergency_contact_name" name="emergency_contact_name">
-
-            <label for="emergency_contact_address">Emergency Contact Address:</label>
-            <textarea id="emergency_contact_address" name="emergency_contact_address"></textarea>
-
-            <label for="relation">Relation:</label>
-            <input type="text" id="relation" name="relation">
-
-            <!-- Agrarian and Farm Information -->
-            <label for="agrarian_beneficiary">Agrarian Reform Beneficiary:</label>
-            <select id="agrarian_beneficiary" name="agrarian_beneficiary">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-
-            <label for="farm_area">Farm Area (in hectares):</label>
-            <input type="number" id="farm_area" name="farm_area" step="0.01">
-
-            <label for="farm_type">Farm Type:</label>
-            <select id="farm_type" name="farm_type">
-                <option value="Irrigated">Irrigated</option>
-                <option value="Rainfed">Rainfed</option>
-            </select>
-
-            <label for="is_tenant">Are you a Tenant?</label>
-            <select id="is_tenant" name="is_tenant">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-
-            <!-- Recruited By -->
-            <label for="recruited_by">Recruited By:</label>
-            <input type="text" id="recruited_by" name="recruited_by">
-
-            <!-- Signature and Date -->
-            <label for="signature">Signature:</label>
-            <input type="text" id="signature" name="signature">
-
-            <label for="signed_date">Signed Date:</label>
-            <input type="date" id="signed_date" name="signed_date">
-
-            <!-- Submit Button -->
-            <button type="submit">Save Profile</button>
+            <!-- Form Navigation -->
+            <div class="form-navigation">
+                <button type="button" id="prevBtn" disabled>Previous</button>
+                <button type="button" id="nextBtn">Next</button>
+            </div>
         </form>
     </div>
-</body>
-</html>
+
+    <!-- Bootstrap JS for optional interactivity -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentStep = 1;
+        const totalSteps = 7;
+
+        function showStep(step) {
+            document.querySelectorAll('.form-step').forEach((section, index) => {
+                section.classList.toggle('active', index + 1 === step);
+            });
+
+            document.getElementById('prevBtn').disabled = step === 1;
+            document.getElementById('nextBtn').disabled = step === totalSteps;
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+
+        // Initialize the first step
+        showStep(currentStep);
+    </script>

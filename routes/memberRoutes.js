@@ -37,8 +37,7 @@ router.get('/change-password', isAuthenticatedMember, memberController.renderCha
 router.post('/change-password', isAuthenticatedMember, memberController.updatePassword);
 
 
-router.get('/member/profile', (req, res) => {
-    res.send('Member Profile');
-});
+// Route para sa profile page
+router.get('/profile', memberController.getProfile);
 
 module.exports = router;

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- Font Awesome and Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: #1d3557;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            justify-content: space-between;
+            padding-bottom: 20px;
+        }
+
+        .sidebar .logo {
+            text-align: center;
+            padding: 20px 0;
+            font-size: 24px;
+            font-weight: bold;
+            background-color: #457b9d;
+        }
+
+        .nav {
+            margin-top: 20px;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .nav-item:hover {
+            background-color: #457b9d;
+        }
+
+        .nav-item i {
+            margin-right: 15px;
+            font-size: 20px;
+        }
+
+        .dropdown {
+            display: none;
+            flex-direction: column;
+            background-color: #2a4d69;
+        }
+
+        .dropdown .nav-item {
+            padding-left: 40px;
+        }
+
+        .nav-bottom {
+            margin-top: auto;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            width: calc(100% - 280px);
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">Admin Panel</div>
+        <div class="nav">
+            <div class="nav-item" onclick="showSection('dashboard')">
+                <i class="fa-solid fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </div>
+        </div>
+        <div class="nav-bottom">
+            <div class="nav-item" onclick="toggleDropdown('settings-dropdown')">
+                <i class="fa-solid fa-cog"></i>
+                <span>Settings</span>
+                <i class="fa-solid fa-chevron-down" style="margin-left:auto;"></i>
+            </div>
+            <div id="settings-dropdown" class="dropdown">
+                <div class="nav-item" onclick="window.location.href='/admin/register'">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>Register</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='/admin/change-password'">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Change Password</span>
+                </div>
+            </div>
+            <div class="nav-item">
+                <i class="fa-solid fa-sign-out-alt"></i>
+                <a href="/logout" style="color: inherit; text-decoration: none;">Logout</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Function to show/hide sections
+        function showSection(sectionId) {
+            document.querySelectorAll('.dashboard-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // Function to toggle dropdowns
+        function toggleDropdown(dropdownId) {
+            let dropdown = document.getElementById(dropdownId);
+            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+        }
+    </script>
+</body>
+</html>
