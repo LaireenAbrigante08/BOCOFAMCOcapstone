@@ -12,14 +12,33 @@ const isAuthenticatedMember = (req, res, next) => {
 
 // Member Dashboard Route
 router.get('/dashboard', isAuthenticatedMember, (req, res) => {
-    res.render('member/dashboard', { 
+    // Fetch additional data if needed (e.g., loans, rentals, etc.)
+    const userData = {
         cb_number: req.session.user.cb_number,
-        username: req.session.user.username // Ensure username is passed
+        username: req.session.user.username,
+        loans: [
+            { id: 1, amount: 5000, status: 'Active' },
+            { id: 2, amount: 10000, status: 'Pending' }
+        ],
+        rentals: [
+            { id: 1, property: 'Apartment A', status: 'Active' },
+            { id: 2, property: 'House B', status: 'Inactive' }
+        ]
+    };
+
+    res.render('member/dashboard', { 
+        user: userData, // Pass all user-related data to the template
+        title: 'Member Dashboard' // Optional: Add a title for the page
     });
 });
 
 // Change Password Routes
 router.get('/change-password', isAuthenticatedMember, memberController.renderChangePasswordPage);
 router.post('/change-password', isAuthenticatedMember, memberController.updatePassword);
+
+
+router.get('/member/profile', (req, res) => {
+    res.send('Member Profile');
+});
 
 module.exports = router;

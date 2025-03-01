@@ -1,153 +1,122 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+<%- include('../partials/membersidebar') %>
 
-    <!-- Font Awesome and Google Fonts -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 0;
+    }
+    .main-content {
+        padding: 20px;
+    }
+    .card {
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    .card h1, .card h2 {
+        color: #333333;
+        margin-bottom: 15px;
+    }
+    .card p {
+        color: #666666;
+    }
+    .stats-container {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .stat-card {
+        background: #007bff;
+        color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        flex: 1;
+        text-align: center;
+    }
+    .stat-card h3 {
+        margin: 0;
+        font-size: 18px;
+    }
+    .stat-card p {
+        margin: 5px 0 0;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .recent-activity {
+        margin-top: 30px;
+    }
+    .recent-activity h3 {
+        color: #333333;
+        margin-bottom: 15px;
+    }
+    .activity-list {
+        list-style: none;
+        padding: 0;
+    }
+    .activity-list li {
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .activity-list li span {
+        color: #666666;
+        font-size: 14px;
+    }
+</style>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<div class="main-content">
+    <div class="card" id="dashboard">
+        <h1>Welcome, <%= user.username %>!</h1>
+        <p>CB Number: <%= user.cb_number %></p>
 
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f5f7fa;
-            color: #333;
-            display: flex;
-            height: 100vh;
-        }
-
-        .sidebar {
-            width: 280px;
-            background-color: #1d3557;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-            justify-content: space-between;
-            padding-bottom: 20px;
-        }
-
-        .sidebar .logo {
-            text-align: center;
-            padding: 20px 0;
-            font-size: 24px;
-            font-weight: bold;
-            background-color: #457b9d;
-        }
-
-        .nav {
-            margin-top: 20px;
-            flex-grow: 1;
-        }
-
-        .nav-item {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .nav-item:hover {
-            background-color: #457b9d;
-        }
-
-        .nav-item i {
-            margin-right: 15px;
-            font-size: 20px;
-        }
-
-        .dropdown {
-            display: none;
-            flex-direction: column;
-            background-color: #2a4d69;
-        }
-
-        .dropdown .nav-item {
-            padding-left: 40px;
-        }
-
-        .nav-bottom {
-            margin-top: auto;
-        }
-
-        .main-content {
-            margin-left: 280px;
-            padding: 30px;
-            width: calc(100% - 280px);
-            overflow-y: auto;
-        }
-    </style>
-</head>
-<body>
-    <div class="sidebar">
-        <div class="logo">Member Name</div>
-        <div class="nav">
-            <div class="nav-item" onclick="showSection('dashboard')">
-                <i class="fa-solid fa-tachometer-alt"></i>
-                <span>Dashboard</span>
+        <!-- Loans Section -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Total Loans</h3>
+                <p><%= user.loans.length %></p>
+            </div>
+            <div class="stat-card">
+                <h3>Active Rentals</h3>
+                <p><%= user.rentals.filter(r => r.status === 'Active').length %></p>
             </div>
         </div>
-        <div class="nav-bottom">
-            <div class="nav-item" onclick="toggleDropdown('settings-dropdown')">
-                <i class="fa-solid fa-cog"></i>
-                <span>Settings</span>
-                <i class="fa-solid fa-chevron-down" style="margin-left:auto;"></i>
-            </div>
-            <div id="settings-dropdown" class="dropdown">
-                <div class="nav-item" onclick="window.location.href='/member/profile'">
-                    <i class="fa-solid fa-user-plus"></i>
-                    <span>Profile</span>
-                </div>
-                <div class="nav-item" onclick="window.location.href='/member/change-password'">
-                    <i class="fa-solid fa-lock"></i>
-                    <span>Change Password</span>
-                </div>
-            </div>
-            <div class="nav-item">
-                <i class="fa-solid fa-sign-out-alt"></i>
-                <a href="/logout" style="color: inherit; text-decoration: none;">Logout</a>
-            </div>
+
+        <!-- Recent Activity Section -->
+        <div class="recent-activity">
+            <h3>Recent Loans</h3>
+            <ul class="activity-list">
+                <% user.loans.forEach(loan => { %>
+                    <li>
+                        <span>Loan ID: <%= loan.id %> - Amount: ₱<%= loan.amount %></span>
+                        <span>Status: <%= loan.status %></span>
+                    </li>
+                <% }) %>
+            </ul>
         </div>
     </div>
+</div>
 
-    <div class="main-content">
-        <div class="card" id="dashboard">
-            <h1>Welcome, Member!</h1>
-            <p>Navigate through the sidebar to manage the system effectively.</p>
-        </div>
-        <div class="card" id="register" style="display: none;">
-            <h2>Register a New Member</h2>
-        </div>
-        <div class="card" id="change-password" style="display: none;">
-            <h2>Change Password</h2>
-        </div>
-    </div>
 
-    <script>
-        function showSection(sectionId) {
-            document.querySelectorAll('.card').forEach(section => {
-                section.style.display = 'none';
-            });
-            document.getElementById(sectionId).style.display = 'block';
-        }
+<script>
+    function showSection(sectionId) {
+        document.querySelectorAll('.card').forEach(section => {
+            section.style.display = 'none';
+        });
+        document.getElementById(sectionId).style.display = 'block';
+    }
 
-        function toggleDropdown(dropdownId) {
-            let dropdown = document.getElementById(dropdownId);
-            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
-        }
-    </script>
+    function toggleDropdown(dropdownId) {
+        let dropdown = document.getElementById(dropdownId);
+        dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+    }
+</script>
 </body>
 </html>
