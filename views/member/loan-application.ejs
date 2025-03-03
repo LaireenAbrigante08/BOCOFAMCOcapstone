@@ -1,0 +1,441 @@
+<%- include('../partials/membersidebar') %>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f5f7fa;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .loan-container {
+        background-color: #fff;
+        padding: 50px;
+        border-radius: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 100%;
+        max-width: 700px;
+    }
+
+    .loan-container h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #1d3557;
+    }
+
+    .loan-container p {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    .loan-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .loan-button {
+        background-color: #457b9d;
+        color: #fff;
+        border: none;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .loan-button:hover {
+        background-color: #1d3557;
+    }
+
+    .loan-button i {
+        font-size: 20px;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .modal-header h1 {
+        font-size: 24px;
+        color: #1d3557;
+    }
+
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #333;
+    }
+
+    .close-btn:hover {
+        color: #ff4d4d;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        height: 100px;
+    }
+
+    .form-group .checkbox-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .form-group .checkbox-group label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .form-group .checkbox-group input {
+        width: auto;
+    }
+
+    .form-container button {
+        background-color: #457b9d;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .form-container button:hover {
+        background-color: #1d3557;
+    }
+
+    .signature-section {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .signature-section .form-group {
+        flex: 1;
+    }
+</style>
+</head>
+<body>
+    <div class="loan-container">
+        <h1>Loan Application</h1>
+        <p>Select the type of loan you want to apply for:</p>
+
+        <div class="loan-buttons">
+            <!-- Salary Loan Button -->
+            <button class="loan-button" onclick="window.location.href='/member/loan-salary'">
+                <i class="fa-solid fa-money-bill"></i>
+                <span>Salary Loan</span>
+            </button>
+
+            <!-- Regular/Agricultural Loan Button -->
+            <button class="loan-button" id="openModalBtn">
+                <i class="fa-solid fa-tractor"></i>
+                <span>Regular/Agricultural Loan</span>
+            </button>
+
+            <!-- Bonuses Loan Button -->
+            <button class="loan-button" onclick="window.location.href='/member/loan-bonuses'">
+                <i class="fa-solid fa-gift"></i>
+                <span>Bonuses Loan</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="loanModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>BONGABONG COCONUT FARMERS MULTI-PURPOSE COOPERATIVE</h1>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <h2>LOAN APPLICATION FORM FOR MEMBERS</h2>
+
+            <form action="/member/loan-regular" method="POST">
+                <!-- Section I: Member Information -->
+                <div class="form-group">
+                    <label for="dateOfApplication">Date of Application:</label>
+                    <input type="date" id="dateOfApplication" name="dateOfApplication" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="applicationNo">Application No.:</label>
+                    <input type="text" id="applicationNo" name="applicationNo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="memberName">Name of Member-Borrower:</label>
+                    <input type="text" id="memberName" name="memberName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="accountNo">Account No.:</label>
+                    <input type="text" id="accountNo" name="accountNo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="coopIdNo">Coop I.D No.:</label>
+                    <input type="text" id="coopIdNo" name="coopIdNo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="spouseName">Name of Spouse:</label>
+                    <input type="text" id="spouseName" name="spouseName">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactNo">Contact No.:</label>
+                    <input type="text" id="contactNo" name="contactNo" required>
+                </div>
+
+                <!-- Section II: Purpose of Loan -->
+                <div class="form-group">
+                    <label>Purpose of Loan:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="purpose" value="Emergency"> Emergency</label>
+                        <label><input type="checkbox" name="purpose" value="Farm Equipment"> Farm Equipment</label>
+                        <label><input type="checkbox" name="purpose" value="Providential"> Providential</label>
+                        <label><input type="checkbox" name="purpose" value="Agricultural"> Agricultural</label>
+                        <label><input type="checkbox" name="purpose" value="Crop Production"> Crop Production</label>
+                        <label><input type="checkbox" name="purpose" value="Others"> Others</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="securityOffered">Security Offered:</label>
+                    <input type="text" id="securityOffered" name="securityOffered">
+                </div>
+
+                <!-- Section III: Loan Amount -->
+                <div class="form-group">
+                    <label for="loanAmount">Amount of Loan Application:</label>
+                    <input type="number" id="loanAmount" name="loanAmount" required>
+                </div>
+
+                <!-- Section IV: Sketch Map -->
+                <div class="form-group">
+                    <label for="sketchMap">Sketch Map (use separate sheet if necessary):</label>
+                    <textarea id="sketchMap" name="sketchMap"></textarea>
+                </div>
+
+                <!-- Section V: Annual Income -->
+                <div class="form-group">
+                    <label for="annualIncome">Annual Income:</label>
+                    <input type="number" id="annualIncome" name="annualIncome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sourceOfIncome">Source of Income:</label>
+                    <input type="text" id="sourceOfIncome" name="sourceOfIncome" required>
+                </div>
+
+                <!-- Section VI: Basis of Recommendation -->
+                <div class="form-group">
+                    <label for="paidUpCapital">Member’s Paid-up Capital:</label>
+                    <input type="text" id="paidUpCapital" name="paidUpCapital">
+                </div>
+
+                <div class="form-group">
+                    <label>CBU:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="cbu" value="Updated"> Updated</label>
+                        <label><input type="checkbox" name="cbu" value="Not Updated"> Not Updated</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="previousLoan">Previous Loan:</label>
+                    <input type="text" id="previousLoan" name="previousLoan">
+                </div>
+
+                <div class="form-group">
+                    <label for="outstandingBalance">Outstanding Balance:</label>
+                    <input type="text" id="outstandingBalance" name="outstandingBalance">
+                </div>
+
+                <!-- Section VII: Borrower’s Category -->
+                <div class="form-group">
+                    <label>Borrower’s Category:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="category" value="New Member"> New Member</label>
+                        <label><input type="checkbox" name="category" value="With O/B Balance"> With O/B Balance</label>
+                        <label><input type="checkbox" name="category" value="New Borrower"> New Borrower</label>
+                        <label><input type="checkbox" name="category" value="Current"> Current</label>
+                        <label><input type="checkbox" name="category" value="Old Member"> Old Member</label>
+                        <label><input type="checkbox" name="category" value="Restructured"> Restructured</label>
+                        <label><input type="checkbox" name="category" value="Old Borrower"> Old Borrower</label>
+                        <label><input type="checkbox" name="category" value="Past Due"> Past Due</label>
+                        <label><input type="checkbox" name="category" value="Others"> Others</label>
+                    </div>
+                </div>
+
+                <!-- Section VIII: Amount of Loan Recommended -->
+                <div class="form-group">
+                    <label for="loanRecommended">Amount of Loan Recommended:</label>
+                    <input type="text" id="loanRecommended" name="loanRecommended">
+                </div>
+
+                <!-- Section IX: Loan Application Recommended By -->
+                <div class="form-group">
+                    <label for="loanOfficer">Loan Application Recommended By:</label>
+                    <input type="text" id="loanOfficer" name="loanOfficer">
+                </div>
+
+                <div class="form-group">
+                    <label for="recommendationDate">Date:</label>
+                    <input type="date" id="recommendationDate" name="recommendationDate">
+                </div>
+
+                <!-- Section X: Management/Credit Committee’s Action -->
+                <div class="form-group">
+                    <label>Management/Credit Committee’s Action:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="action" value="Approved"> Approved</label>
+                        <label><input type="checkbox" name="action" value="Disapproved"> Disapproved</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="approvedAmount">Approved Amount:</label>
+                    <input type="text" id="approvedAmount" name="approvedAmount">
+                </div>
+
+                <div class="form-group">
+                    <label for="actionDate">Date:</label>
+                    <input type="date" id="actionDate" name="actionDate">
+                </div>
+
+                <!-- Section XI: Cooperative Loans Approving Committee -->
+                <div class="form-group">
+                    <label for="operationManager">Operation Manager:</label>
+                    <input type="text" id="operationManager" name="operationManager">
+                </div>
+
+                <div class="form-group">
+                    <label for="generalManager">General Manager:</label>
+                    <input type="text" id="generalManager" name="generalManager">
+                </div>
+
+                <!-- Signature Section -->
+                <div class="signature-section">
+                    <div class="form-group">
+                        <label for="borrowerSignature">Signature of Borrower:</label>
+                        <input type="text" id="borrowerSignature" name="borrowerSignature" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="spouseSignature">Signature of Spouse:</label>
+                        <input type="text" id="spouseSignature" name="spouseSignature">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="coMakerSignature">Signature of Co-Maker (if necessary):</label>
+                        <input type="text" id="coMakerSignature" name="coMakerSignature">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <button type="submit">Submit Application</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle modal open/close
+        const modal = document.getElementById('loanModal');
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        // Open modal
+        openModalBtn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+
+        // Close modal
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside the modal content
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -40,4 +40,24 @@ router.post('/change-password', isAuthenticatedMember, memberController.updatePa
 // Route para sa profile page
 router.get('/profile', memberController.getProfile);
 
+// Loan Application Route
+router.get('/loan-application', (req, res) => {
+    res.render('member/loan-application'); // Render the loan-application.ejs file inside the member folder
+});
+
+// Regular Loan Application Route
+router.get('/loan-regular', (req, res) => {
+    res.render('member/loan-regular'); // Render the loan-regular.ejs file
+});
+
+// Regular Loan Application Route
+router.get('/loan-salary', (req, res) => {
+    res.render('member/loan-salary'); // Render the loan-regular.ejs file
+});
+
+// Regular Loan Application Route
+router.get('/loan-bonuses', (req, res) => {
+    res.render('member/loan-bonuses'); // Render the loan-regular.ejs file
+});
+
 module.exports = router;
