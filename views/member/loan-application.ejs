@@ -1,186 +1,266 @@
 <%- include('../partials/membersidebar') %>
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    body {
-        font-family: 'Roboto', sans-serif;
-        background-color: #f5f7fa;
-        color: #333;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding-left: 250px; /* Adjust this value based on the sidebar width */
+}
 
-    .loan-container {
-        background-color: #fff;
-        padding: 50px;
-        border-radius: 25px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        width: 100%;
-        max-width: 700px;
-    }
+.loan-container {
+    background-color: #fff;
+    padding: 100px; /* Increased padding */
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 1000px; /* Increased max-width */
+    margin-left: 20px; /* Added margin to the left */
+}
 
-    .loan-container h1 {
-        font-size: 24px;
-        margin-bottom: 20px;
-        color: #1d3557;
-    }
+.loan-container h1 {
+    font-size: 30px; /* Increased font size */
+    margin-bottom: 30px;
+    color: #1d3557;
+}
 
-    .loan-container p {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 30px;
-    }
+.loan-container p {
+    font-size: 20px; /* Increased font size */
+    color: #666;
+    margin-bottom: 30px;
+}
 
-    .loan-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
+.loan-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
-    .loan-button {
-        background-color: #457b9d;
-        color: #fff;
-        border: none;
-        padding: 15px;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-    }
+.loan-button {
+    background-color: #457b9d;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
 
-    .loan-button:hover {
-        background-color: #1d3557;
-    }
+.loan-button:hover {
+    background-color: #1d3557;
+}
 
-    .loan-button i {
-        font-size: 20px;
-    }
+.loan-button i {
+    font-size: 20px;
+}
 
-    /* Modal Styles */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        justify-content: center;
-        align-items: center;
-    }
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
 
-    .modal-content {
-        background-color: #fff;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        max-width: 800px;
-        width: 90%;
-        max-height: 90vh;
-        overflow-y: auto;
-    }
+.modal-content {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 900px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
 
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-    }
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
-    .modal-header h1 {
-        font-size: 24px;
-        color: #1d3557;
-    }
+.modal-header h1 {
+    font-size: 28px;
+    color: #1d3557;
+    margin: 0;
+}
 
-    .close-btn {
-        background: none;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        color: #333;
-    }
+.modal-header h2 {
+    font-size: 22px;
+    color: #457b9d;
+    margin: 10px 0;
+}
 
-    .close-btn:hover {
-        color: #ff4d4d;
-    }
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #333;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
 
-    .form-group {
-        margin-bottom: 20px;
-    }
+.close-btn:hover {
+    color: #ff4d4d;
+}
 
-    .form-group label {
-        display: block;
-        font-weight: 500;
-        margin-bottom: 5px;
-    }
+.form-group {
+    margin-bottom: 20px;
+}
 
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 14px;
-    }
+.form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #1d3557;
+}
 
-    .form-group textarea {
-        resize: vertical;
-        height: 100px;
-    }
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s;
+}
 
-    .form-group .checkbox-group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #457b9d;
+    outline: none;
+}
 
-    .form-group .checkbox-group label {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
+.form-group textarea {
+    resize: vertical;
+    height: 100px;
+}
 
-    .form-group .checkbox-group input {
-        width: auto;
-    }
+.form-group .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 
-    .form-container button {
-        background-color: #457b9d;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
+.form-group .checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 400;
+    color: #666;
+}
 
-    .form-container button:hover {
-        background-color: #1d3557;
-    }
+.form-group .checkbox-group input {
+    width: auto;
+}
 
-    .signature-section {
-        margin-top: 30px;
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
-    }
+.form-container button {
+    background-color: #457b9d;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 20px;
+}
 
-    .signature-section .form-group {
-        flex: 1;
-    }
+.form-container button:hover {
+    background-color: #1d3557;
+}
+
+.signature-section {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.signature-section .form-group {
+    flex: 1;
+}
+
+.signature-section .form-group input {
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+/* Additional Aesthetic Enhancements */
+.modal-content {
+    background: linear-gradient(145deg, #ffffff, #f5f7fa);
+    border: 1px solid #e0e0e0;
+}
+
+.modal-header h1 {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.modal-header h2 {
+    font-weight: 600;
+    color: #1d3557;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #999;
+}
+
+.form-group .checkbox-group label:hover {
+    color: #1d3557;
+}
+
+.form-container button {
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.form-container button:hover {
+    background-color: #1d3557;
+}
+
+.signature-section {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.signature-section .form-group {
+    flex: 1;
+}
 </style>
 </head>
 <body>
@@ -190,7 +270,7 @@
 
         <div class="loan-buttons">
             <!-- Salary Loan Button -->
-            <button class="loan-button" onclick="window.location.href='/member/loan-salary'">
+            <button class="loan-button" id="openSalaryModalBtn">
                 <i class="fa-solid fa-money-bill"></i>
                 <span>Salary Loan</span>
             </button>
@@ -202,14 +282,132 @@
             </button>
 
             <!-- Bonuses Loan Button -->
-            <button class="loan-button" onclick="window.location.href='/member/loan-bonuses'">
+            <button class="loan-button" id="openBonusesModalBtn">
                 <i class="fa-solid fa-gift"></i>
                 <span>Bonuses Loan</span>
             </button>
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Salary Loan Modal -->
+    <div id="salaryLoanModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Loan Application / Agreement Form</h1>
+                <button class="close-btn" id="closeSalaryModalBtn">&times;</button>
+            </div>
+            <form action="/loan-salary" method="POST">
+                <div class="form-group">
+                    <label for="application_no">Application No.:</label>
+                    <input type="text" id="application_no" name="application_no">
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date">
+                </div>
+
+                <div class="form-group">
+                    <label>Type of Loan:</label>
+                    <div class="checkbox-group">
+                        <label><input type="radio" id="new" name="loan_type" value="New"> New</label>
+                        <label><input type="radio" id="renewal" name="loan_type" value="Renewal"> Renewal</label>
+                    </div>
+                </div>
+
+                <h3>Applicant Details</h3>
+                <div class="form-group">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" id="last_name" name="last_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" id="first_name" name="first_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="middle_initial">M.I.:</label>
+                    <input type="text" id="middle_initial" name="middle_initial">
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="municipality">Municipality:</label>
+                    <input type="text" id="municipality" name="municipality" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="office">Name of Office/Agency:</label>
+                    <input type="text" id="office" name="office" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="salary">Basic Monthly Salary:</label>
+                    <input type="number" id="salary" name="salary" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="net_pay">Net Take Home Pay:</label>
+                    <input type="number" id="net_pay" name="net_pay" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="spouse_name">Name of Spouse:</label>
+                    <input type="text" id="spouse_name" name="spouse_name">
+                </div>
+
+                <div class="form-group">
+                    <label for="contact_no">Contact No.:</label>
+                    <input type="text" id="contact_no" name="contact_no" required>
+                </div>
+
+                <h3>Loan Details</h3>
+                <div class="form-group">
+                    <label for="loan_amount">Amount Applied (Php):</label>
+                    <input type="number" id="loan_amount" name="loan_amount" required>
+                </div>
+
+                <div class="form-group">
+                    <p><strong>I swear that:</strong></p>
+                    <ul>
+                        <li>I am up-to-date in the payment of my existing loans.</li>
+                        <li>The pay slips I submitted are correct and authentic.</li>
+                        <li>I am not a respondent to any pending administrative or criminal case.</li>
+                        <li>The statements declared above are true and correct.</li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <p><strong>I agree</strong> that should any misrepresentation be discovered, BOCOFAMCO can withdraw from my bank account the amount due under this loan.</p>
+                </div>
+
+                <div class="form-group">
+                    <p>In the event of my retirement or cessation of service, I authorize BOCOFAMCO to claim, collect, and receive any sum of money due to me to cover the total amount due.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="applicant_signature">Applicant Signature:</label>
+                    <input type="text" id="applicant_signature" name="applicant_signature" required>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit">Submit Loan Application</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Regular Loan Modal -->
     <div id="loanModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -414,28 +612,166 @@
         </div>
     </div>
 
+    <div id="bonusesLoanModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>Loan Application / Agreement Form</h1>
+                <button class="close-btn" id="closeBonusesModalBtn">&times;</button>
+            </div>
+            <form action="/loan-bonuses" method="POST">
+                <div class="form-group">
+                    <label for="application_no">Application No.:</label>
+                    <input type="text" id="application_no" name="application_no">
+                </div>
+    
+                <div class="form-group">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date">
+                </div>
+    
+                <div class="form-group">
+                    <label>Type of Loan:</label>
+                    <div class="checkbox-group">
+                        <label><input type="radio" id="new" name="loan_type" value="New"> New</label>
+                        <label><input type="radio" id="renewal" name="loan_type" value="Renewal"> Renewal</label>
+                    </div>
+                </div>
+    
+                <h3>Applicant Details</h3>
+                <div class="form-group">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" id="last_name" name="last_name" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="first_name">First Name:</label>
+                    <input type="text" id="first_name" name="first_name" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="middle_initial">M.I.:</label>
+                    <input type="text" id="middle_initial" name="middle_initial">
+                </div>
+    
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="municipality">Municipality:</label>
+                    <input type="text" id="municipality" name="municipality" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="office">Name of Office/Agency:</label>
+                    <input type="text" id="office" name="office" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="salary">Basic Monthly Salary:</label>
+                    <input type="number" id="salary" name="salary" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="net_pay">Net Take Home Pay:</label>
+                    <input type="number" id="net_pay" name="net_pay" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="spouse_name">Name of Spouse:</label>
+                    <input type="text" id="spouse_name" name="spouse_name">
+                </div>
+    
+                <div class="form-group">
+                    <label for="contact_no">Contact No.:</label>
+                    <input type="text" id="contact_no" name="contact_no" required>
+                </div>
+    
+                <h3>Loan Details</h3>
+                <div class="form-group">
+                    <label for="loan_amount">Amount Applied (Php):</label>
+                    <input type="number" id="loan_amount" name="loan_amount" required>
+                </div>
+    
+                <div class="form-group">
+                    <p><strong>I swear that:</strong></p>
+                    <ul>
+                        <li>I am up-to-date in the payment of my existing loans.</li>
+                        <li>The pay slips I submitted are correct and authentic.</li>
+                        <li>I am not a respondent to any pending administrative or criminal case.</li>
+                        <li>The statements declared above are true and correct.</li>
+                    </ul>
+                </div>
+    
+                <div class="form-group">
+                    <p><strong>I agree</strong> that should any misrepresentation be discovered, BOCOFAMCO can withdraw from my bank account the amount due under this loan.</p>
+                </div>
+    
+                <div class="form-group">
+                    <p>In the event of my retirement or cessation of service, I authorize BOCOFAMCO to claim, collect, and receive any sum of money due to me to cover the total amount due.</p>
+                </div>
+    
+                <div class="form-group">
+                    <label for="applicant_signature">Applicant Signature:</label>
+                    <input type="text" id="applicant_signature" name="applicant_signature" required>
+                </div>
+    
+                <div class="form-group">
+                    <button type="submit">Submit Loan Application</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <script>
-        // JavaScript to handle modal open/close
-        const modal = document.getElementById('loanModal');
-        const openModalBtn = document.getElementById('openModalBtn');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-
-        // Open modal
-        openModalBtn.addEventListener('click', () => {
-            modal.style.display = 'flex';
-        });
-
-        // Close modal
-        closeModalBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        // Close modal when clicking outside the modal content
-        window.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                modal.style.display = 'none';
+        // Function to handle modal open/close
+        function handleModal(modalId, openBtnId, closeBtnId) {
+            const modal = document.getElementById(modalId);
+            const openModalBtn = document.getElementById(openBtnId);
+            const closeModalBtn = document.getElementById(closeBtnId);
+        
+            if (openModalBtn && modal) {
+                // Open modal
+                openModalBtn.addEventListener('click', () => {
+                    modal.style.display = 'flex';
+                });
             }
-        });
+        
+            if (closeModalBtn && modal) {
+                // Close modal
+                closeModalBtn.addEventListener('click', () => {
+                    modal.style.display = 'none';
+                });
+            }
+        
+            // Close modal when clicking outside the modal content
+            window.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+        
+        // Initialize modals
+        handleModal('loanModal', 'openModalBtn', 'closeModalBtn'); // Regular Loan Modal
+        handleModal('salaryLoanModal', 'openSalaryModalBtn', 'closeSalaryModalBtn'); // Salary Loan Modal
+        handleModal('bonusesLoanModal', 'openBonusesModalBtn', 'closeBonusesModalBtn'); // Bonuses Loan Modal
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

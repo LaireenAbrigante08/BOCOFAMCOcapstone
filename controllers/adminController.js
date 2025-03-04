@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
+const Member = require('../models/Member');
 
 
 exports.adminDashboard = (req, res) => {

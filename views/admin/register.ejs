@@ -1,360 +1,798 @@
 <%- include('../partials/adminsidebar') %>
 
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
-        }
-        .form-container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        .form-container h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .error-message {
-            color: red;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="form-container">
-        <h2>BOCOFAMCO ID Form</h2>
-
-        <% if (error) { %>
-            <p class="error-message"><%= error %></p>
-        <% } %>
-
-        <form action="/admin/register" method="POST">
-            <div class="mb-3">
-                <label for="cb_number" class="form-label">CB Number:</label>
-                <input type="text" id="cb_number" name="cb_number" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="first_name" class="form-label">First Name:</label>
-                <input type="text" id="first_name" name="first_name" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="middle_name" class="form-label">Middle Name:</label>
-                <input type="text" id="middle_name" name="middle_name" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="last_name" class="form-label">Last Name:</label>
-                <input type="text" id="last_name" name="last_name" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="address" class="form-label">Address:</label>
-                <textarea id="address" name="address" class="form-control" required></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label for="dob" class="form-label">Date of Birth:</label>
-                <input type="date" id="dob" name="dob" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" id="email" name="email" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="gender" class="form-label">Gender:</label>
-                <select id="gender" name="gender" class="form-select">
-                    <option value="">-- Select Gender --</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="contact_number" class="form-label">Contact Number:</label>
-                <input type="text" id="contact_number" name="contact_number" class="form-control" pattern="[0-9]{10,}" title="Enter a valid 10-digit number">
-            </div>
-
-            <div class="mb-3">
-                <label for="role" class="form-label">Role:</label>
-                <select id="role" name="role" class="form-select" required>
-                    <option value="member">Member</option>
-                    <option value="admin">Admin</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Beneficiaries:</label>
-                <input type="text" name="beneficiaries[]" class="form-control mb-2" placeholder="Beneficiary 1">
-                <input type="text" name="beneficiaries[]" class="form-control" placeholder="Beneficiary 2">
-            </div>
-
-            <h3 class="mt-4">Emergency Contact</h3>
-
-            <div class="mb-3">
-                <label for="emergency_name" class="form-label">Name:</label>
-                <input type="text" id="emergency_name" name="emergency_name" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="emergency_relationship" class="form-label">Relationship:</label>
-                <input type="text" id="emergency_relationship" name="emergency_relationship" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="emergency_address" class="form-label">Address:</label>
-                <textarea id="emergency_address" name="emergency_address" class="form-control"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label for="emergency_contact" class="form-label">Contact Number:</label>
-                <input type="text" id="emergency_contact" name="emergency_contact" class="form-control" pattern="[0-9]{10,}" title="Enter a valid 10-digit number" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="date_issued" class="form-label">Date Issued:</label>
-                <input type="date" id="date_issued" name="date_issued" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
-                <input type="password" id="password" name="password" class="form-control" required>
-            </div>
-
-            <!-- New Fields -->
-            <div class="mb-3">
-                <label for="nickname" class="form-label">Nickname:</label>
-                <input type="text" id="nickname" name="nickname" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="civil_status" class="form-label">Civil Status:</label>
-                <input type="text" id="civil_status" name="civil_status" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="age" class="form-label">Age:</label>
-                <input type="number" id="age" name="age" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="place_of_birth" class="form-label">Place of Birth:</label>
-                <input type="text" id="place_of_birth" name="place_of_birth" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="nationality" class="form-label">Nationality:</label>
-                <input type="text" id="nationality" name="nationality" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="religion" class="form-label">Religion:</label>
-                <input type="text" id="religion" name="religion" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="spouse_name" class="form-label">Spouse Name:</label>
-                <input type="text" id="spouse_name" name="spouse_name" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="spouse_age" class="form-label">Spouse Age:</label>
-                <input type="number" id="spouse_age" name="spouse_age" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="spouse_occupation" class="form-label">Spouse Occupation:</label>
-                <input type="text" id="spouse_occupation" name="spouse_occupation" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="father_name" class="form-label">Father's Name:</label>
-                <input type="text" id="father_name" name="father_name" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="mother_name" class="form-label">Mother's Name:</label>
-                <input type="text" id="mother_name" name="mother_name" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="parent_address" class="form-label">Parent's Address:</label>
-                <textarea id="parent_address" name="parent_address" class="form-control"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label for="number_of_children" class="form-label">Number of Children:</label>
-                <input type="number" id="number_of_children" name="number_of_children" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="children_info" class="form-label">Children Info:</label>
-                <textarea id="children_info" name="children_info" class="form-control"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label for="educational_attainment" class="form-label">Educational Attainment:</label>
-                <input type="text" id="educational_attainment" name="educational_attainment" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="occupation" class="form-label">Occupation:</label>
-                <input type="text" id="occupation" name="occupation" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="other_income" class="form-label">Other Income:</label>
-                <input type="text" id="other_income" name="other_income" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="annual_income" class="form-label">Annual Income:</label>
-                <input type="number" id="annual_income" name="annual_income" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="elementary_school" class="form-label">Elementary School:</label>
-                <input type="text" id="elementary_school" name="elementary_school" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="elementary_address" class="form-label">Elementary School Address:</label>
-                <input type="text" id="elementary_address" name="elementary_address" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="elementary_year_graduated" class="form-label">Elementary Year Graduated:</label>
-                <input type="text" id="elementary_year_graduated" name="elementary_year_graduated" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="secondary_school" class="form-label">Secondary School:</label>
-                <input type="text" id="secondary_school" name="secondary_school" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="secondary_address" class="form-label">Secondary School Address:</label>
-                <input type="text" id="secondary_address" name="secondary_address" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="secondary_year_graduated" class="form-label">Secondary Year Graduated:</label>
-                <input type="text" id="secondary_year_graduated" name="secondary_year_graduated" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="college_school" class="form-label">College School:</label>
-                <input type="text" id="college_school" name="college_school" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="college_address" class="form-label">College School Address:</label>
-                <input type="text" id="college_address" name="college_address" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="college_year_graduated" class="form-label">College Year Graduated:</label>
-                <input type="text" id="college_year_graduated" name="college_year_graduated" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="vocational_school" class="form-label">Vocational School:</label>
-                <input type="text" id="vocational_school" name="vocational_school" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="vocational_address" class="form-label">Vocational School Address:</label>
-                <input type="text" id="vocational_address" name="vocational_address" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="vocational_year_graduated" class="form-label">Vocational Year Graduated:</label>
-                <input type="text" id="vocational_year_graduated" name="vocational_year_graduated" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="membership_date" class="form-label">Membership Date:</label>
-                <input type="date" id="membership_date" name="membership_date" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="cooperative_position" class="form-label">Cooperative Position:</label>
-                <input type="text" id="cooperative_position" name="cooperative_position" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="emergency_contact_name" class="form-label">Emergency Contact Name:</label>
-                <input type="text" id="emergency_contact_name" name="emergency_contact_name" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="emergency_contact_address" class="form-label">Emergency Contact Address:</label>
-                <textarea id="emergency_contact_address" name="emergency_contact_address" class="form-control"></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label for="relation" class="form-label">Relation:</label>
-                <input type="text" id="relation" name="relation" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="agrarian_beneficiary" class="form-label">Agrarian Beneficiary:</label>
-                <select id="agrarian_beneficiary" name="agrarian_beneficiary" class="form-select">
-                    <option value="">-- Select --</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="farm_area" class="form-label">Farm Area:</label>
-                <input type="number" id="farm_area" name="farm_area" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="farm_type" class="form-label">Farm Type:</label>
-                <select id="farm_type" name="farm_type" class="form-select">
-                    <option value="">-- Select --</option>
-                    <option value="Irrigated">Irrigated</option>
-                    <option value="Rainfed">Rainfed</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="is_tenant" class="form-label">Is Tenant:</label>
-                <select id="is_tenant" name="is_tenant" class="form-select">
-                    <option value="">-- Select --</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="recruited_by" class="form-label">Recruited By:</label>
-                <input type="text" id="recruited_by" name="recruited_by" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="signature" class="form-label">Signature:</label>
-                <input type="text" id="signature" name="signature" class="form-control">
-            </div>
-
-            <div class="mb-3">
-                <label for="signed_date" class="form-label">Signed Date:</label>
-                <input type="date" id="signed_date" name="signed_date" class="form-control">
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">Register</button>
-        </form>
+<div class="form-page">
+  <div class="form-container">
+    <div class="form-header">
+      <h1>BOCOFAMCO ID Form</h1>
+      <p class="form-subtitle">Please fill out all required information</p>
     </div>
 
-</body>
-</html>
+    <% if (error) { %>
+      <div class="alert alert-danger">
+        <i class="alert-icon" data-lucide="alert-circle"></i>
+        <p><%= error %></p>
+      </div>
+    <% } %>
+
+    <form action="/admin/register" method="POST">
+      <!-- Personal Information Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2>Personal Information</h2>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cb_number">CB Number <span class="required">*</span></label>
+            <input type="text" id="cb_number" name="cb_number" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="date_issued">Date Issued <span class="required">*</span></label>
+            <input type="date" id="date_issued" name="date_issued" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="first_name">First Name <span class="required">*</span></label>
+            <input type="text" id="first_name" name="first_name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="middle_name">Middle Name</label>
+            <input type="text" id="middle_name" name="middle_name">
+          </div>
+          
+          <div class="form-group">
+            <label for="last_name">Last Name <span class="required">*</span></label>
+            <input type="text" id="last_name" name="last_name" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nickname">Nickname</label>
+            <input type="text" id="nickname" name="nickname">
+          </div>
+          
+          <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender">
+              <option value="">-- Select Gender --</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="civil_status">Civil Status</label>
+            <input type="text" id="civil_status" name="civil_status">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dob">Date of Birth <span class="required">*</span></label>
+            <input type="date" id="dob" name="dob" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age">
+          </div>
+          
+          <div class="form-group">
+            <label for="place_of_birth">Place of Birth</label>
+            <input type="text" id="place_of_birth" name="place_of_birth">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group form-group-full">
+            <label for="address">Address <span class="required">*</span></label>
+            <textarea id="address" name="address" required></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nationality">Nationality</label>
+            <input type="text" id="nationality" name="nationality">
+          </div>
+          
+          <div class="form-group">
+            <label for="religion">Religion</label>
+            <input type="text" id="religion" name="religion">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email">
+          </div>
+          
+          <div class="form-group">
+            <label for="contact_number">Contact Number</label>
+            <input type="text" id="contact_number" name="contact_number" pattern="[0-9]{10,}" title="Enter a valid 10-digit number">
+          </div>
+        </div>
+      </div>
+
+      <!-- Family Information Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2>Family Information</h2>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="spouse_name">Spouse Name</label>
+            <input type="text" id="spouse_name" name="spouse_name">
+          </div>
+          
+          <div class="form-group">
+            <label for="spouse_age">Spouse Age</label>
+            <input type="number" id="spouse_age" name="spouse_age">
+          </div>
+          
+          <div class="form-group">
+            <label for="spouse_occupation">Spouse Occupation</label>
+            <input type="text" id="spouse_occupation" name="spouse_occupation">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="father_name">Father's Name</label>
+            <input type="text" id="father_name" name="father_name">
+          </div>
+          
+          <div class="form-group">
+            <label for="mother_name">Mother's Name</label>
+            <input type="text" id="mother_name" name="mother_name">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group form-group-full">
+            <label for="parent_address">Parent's Address</label>
+            <textarea id="parent_address" name="parent_address"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="number_of_children">Number of Children</label>
+            <input type="number" id="number_of_children" name="number_of_children">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group form-group-full">
+            <label for="children_info">Children Information</label>
+            <textarea id="children_info" name="children_info" placeholder="Names, ages, and other relevant information"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Educational Background Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2>Educational Background</h2>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="educational_attainment">Educational Attainment</label>
+            <input type="text" id="educational_attainment" name="educational_attainment">
+          </div>
+        </div>
+
+        <div class="education-subsection">
+          <h3>Elementary</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="elementary_school">School Name</label>
+              <input type="text" id="elementary_school" name="elementary_school">
+            </div>
+            
+            <div class="form-group">
+              <label for="elementary_address">School Address</label>
+              <input type="text" id="elementary_address" name="elementary_address">
+            </div>
+            
+            <div class="form-group">
+              <label for="elementary_year_graduated">Year Graduated</label>
+              <input type="text" id="elementary_year_graduated" name="elementary_year_graduated">
+            </div>
+          </div>
+        </div>
+
+        <div class="education-subsection">
+          <h3>Secondary</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="secondary_school">School Name</label>
+              <input type="text" id="secondary_school" name="secondary_school">
+            </div>
+            
+            <div class="form-group">
+              <label for="secondary_address">School Address</label>
+              <input type="text" id="secondary_address" name="secondary_address">
+            </div>
+            
+            <div class="form-group">
+              <label for="secondary_year_graduated">Year Graduated</label>
+              <input type="text" id="secondary_year_graduated" name="secondary_year_graduated">
+            </div>
+          </div>
+        </div>
+
+        <div class="education-subsection">
+          <h3>College</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="college_school">School Name</label>
+              <input type="text" id="college_school" name="college_school">
+            </div>
+            
+            <div class="form-group">
+              <label for="college_address">School Address</label>
+              <input type="text" id="college_address" name="college_address">
+            </div>
+            
+            <div class="form-group">
+              <label for="college_year_graduated">Year Graduated</label>
+              <input type="text" id="college_year_graduated" name="college_year_graduated">
+            </div>
+          </div>
+        </div>
+
+        <div class="education-subsection">
+          <h3>Vocational</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="vocational_school">School Name</label>
+              <input type="text" id="vocational_school" name="vocational_school">
+            </div>
+            
+            <div class="form-group">
+              <label for="vocational_address">School Address</label>
+              <input type="text" id="vocational_address" name="vocational_address">
+            </div>
+            
+            <div class="form-group">
+              <label for="vocational_year_graduated">Year Graduated</label>
+              <input type="text" id="vocational_year_graduated" name="vocational_year_graduated">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Occupation & Income Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2>Occupation & Income</h2>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="occupation">Occupation</label>
+            <input type="text" id="occupation" name="occupation">
+          </div>
+          
+          <div class="form-group">
+            <label for="other_income">Other Income</label>
+            <input type="text" id="other_income" name="other_income">
+          </div>
+          
+          <div class="form-group">
+            <label for="annual_income">Annual Income</label>
+            <input type="number" id="annual_income" name="annual_income">
+          </div>
+        </div>
+      </div>
+
+      <!-- Farm Information Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2>Farm Information</h2>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="agrarian_beneficiary">Agrarian Beneficiary</label>
+            <select id="agrarian_beneficiary" name="agrarian_beneficiary">
+              <option value="">-- Select --</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="farm_area">Farm Area</label>
+            <input type="number" id="farm_area" name="farm_area">
+          </div>
+          
+          <div class="form-group">
+            <label for="farm_type">Farm Type</label>
+            <select id="farm_type" name="farm_type">
+              <option value="">-- Select --</option>
+              <option value="Irrigated">Irrigated</option>
+              <option value="Rainfed">Rainfed</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="is_tenant">Is Tenant</label>
+            <select id="is_tenant" name="is_tenant">
+              <option value="">-- Select --</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cooperative Information Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2>Cooperative Information</h2>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="membership_date">Membership Date</label>
+            <input type="date" id="membership_date" name="membership_date">
+          </div>
+          
+          <div class="form-group">
+            <label for="cooperative_position">Cooperative Position</label>
+            <input type="text" id="cooperative_position" name="cooperative_position">
+          </div>
+          
+          <div class="form-group">
+            <label for="role">Role <span class="required">*</span></label>
+            <select id="role" name="role" required>
+              <option value="member">Member</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="recruited_by">Recruited By</label>
+            <input type="text" id="recruited_by" name="recruited_by">
+          </div>
+        </div>
+      </div>
+
+      <!-- Beneficiaries Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2>Beneficiaries</h2>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group form-group-full">
+            <label>Beneficiaries</label>
+            <div class="beneficiary-inputs">
+              <input type="text" name="beneficiaries[]" placeholder="Beneficiary 1">
+              <input type="text" name="beneficiaries[]" placeholder="Beneficiary 2">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Emergency Contact Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2>Emergency Contact</h2>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="emergency_name">Name <span class="required">*</span></label>
+            <input type="text" id="emergency_name" name="emergency_name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="emergency_relationship">Relationship <span class="required">*</span></label>
+            <input type="text" id="emergency_relationship" name="emergency_relationship" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group form-group-full">
+            <label for="emergency_address">Address</label>
+            <textarea id="emergency_address" name="emergency_address"></textarea>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="emergency_contact">Contact Number <span class="required">*</span></label>
+            <input type="text" id="emergency_contact" name="emergency_contact" pattern="[0-9]{10,}" title="Enter a valid 10-digit number" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="relation">Relation</label>
+            <input type="text" id="relation" name="relation">
+          </div>
+        </div>
+      </div>
+
+      <!-- Account Information Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2>Account Information</h2>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group form-group-full">
+            <label for="password">Password <span class="required">*</span></label>
+            <input type="password" id="password" name="password" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signature Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h2>Signature</h2>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="signature">Signature</label>
+            <input type="text" id="signature" name="signature">
+          </div>
+          
+          <div class="form-group">
+            <label for="signed_date">Signed Date</label>
+            <input type="date" id="signed_date" name="signed_date">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">Register</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  /* Base Styles */
+  :root {
+  --primary-color: #1e3a8a; /* Dark blue */
+  --primary-hover: #1e40af; /* Slightly lighter blue */
+  --secondary-color: #f3f4f6; /* Light gray */
+  --text-color: #111827; /* Dark gray */
+  --text-light: #6b7280; /* Medium gray */
+  --border-color: #d1d5db; /* Light gray border */
+  --error-color: #dc2626; /* Red for errors */
+  --success-color: #059669; /* Green for success */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --radius: 0.5rem;
+}
+
+  body {
+    font-family: 'Inter', 'Segoe UI', Roboto, -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #f3f4f6;
+    color: var(--text-color);
+    line-height: 1.5;
+  }
+
+  /* Form Page Layout */
+  .form-page {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .form-container {
+    background-color: white;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  /* Form Header */
+  .form-header {
+  background-color: #1e3a8a; /* Dark blue */
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+  .form-header h1 {
+    margin: 0;
+    font-size: 1.875rem;
+    font-weight: 700;
+  }
+
+  .form-subtitle {
+    margin-top: 0.5rem;
+    opacity: 0.9;
+    font-size: 1rem;
+  }
+
+  /* Form Sections */
+  .form-section {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .form-section:last-child {
+    border-bottom: none;
+  }
+
+  .section-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .section-divider {
+    height: 3px;
+    width: 50px;
+    background-color: var(--primary-color);
+    margin-top: 0.5rem;
+  }
+
+  /* Form Rows and Groups */
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -0.75rem 1.5rem -0.75rem;
+  }
+
+  .form-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .form-group {
+    flex: 1;
+    min-width: 250px;
+    padding: 0 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group-full {
+    flex: 0 0 100%;
+  }
+
+  /* Form Controls */
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-color);
+  }
+
+  .required {
+    color: var(--error-color);
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="date"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background-color: white;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+  }
+
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px;
+    padding-right: 2.5rem;
+  }
+
+  /* Education Subsections */
+  .education-subsection {
+    margin-bottom: 1.5rem;
+    padding-top: 0.5rem;
+  }
+
+  .education-subsection h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    color: var(--text-light);
+  }
+
+  .education-subsection:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Beneficiary Inputs */
+  .beneficiary-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Alert */
+  .alert {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    margin: 0 2rem 1.5rem;
+    border-radius: var(--radius);
+    background-color: #fee2e2;
+    color: #b91c1c;
+  }
+
+  .alert-icon {
+    flex-shrink: 0;
+    margin-right: 0.75rem;
+    width: 20px;
+    height: 20px;
+  }
+
+  .alert p {
+    margin: 0;
+  }
+
+  /* Form Actions */
+  .form-actions {
+    padding: 1.5rem 2rem;
+    background-color: var(--secondary-color);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .submit-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .submit-btn:hover {
+    background-color: var(--primary-hover);
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .form-page {
+      margin: 1rem auto;
+    }
+    
+    .form-section {
+      padding: 1.25rem 1.5rem;
+    }
+    
+    .form-row {
+      margin: 0 -0.5rem 1.25rem -0.5rem;
+    }
+    
+    .form-group {
+      padding: 0 0.5rem;
+    }
+    
+    .form-actions {
+      padding: 1.25rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .form-header {
+      padding: 1.5rem;
+    }
+    
+    .form-header h1 {
+      font-size: 1.5rem;
+    }
+    
+    .form-group {
+      flex: 0 0 100%;
+    }
+  }
+  .form-container {
+    margin-left: auto; 
+    margin-right: 0; /* Para mas dumikit sa kanan */
+    width: 80%; /* Palakihin ang lapad ng form */
+    max-width: 1000px; /* Pwede mong palakihin pa kung kinakailangan */
+    position: absolute;
+    right: 2rem; /* Ayusin ito depende sa distansya na gusto mo sa kanan */
+}
+
+
+</style>
+
+<script>
+  // Initialize Lucide icons if available
+  if (typeof window !== 'undefined' && window.lucide) {
+    lucide.createIcons();
+  }
+  
+  // Calculate age automatically when date of birth changes
+  document.addEventListener('DOMContentLoaded', function() {
+    const dobInput = document.getElementById('dob');
+    const ageInput = document.getElementById('age');
+    
+    if (dobInput && ageInput) {
+      dobInput.addEventListener('change', function() {
+        if (this.value) {
+          const dob = new Date(this.value);
+          const today = new Date();
+          let age = today.getFullYear() - dob.getFullYear();
+          const monthDiff = today.getMonth() - dob.getMonth();
+          
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+            age--;
+          }
+          
+          ageInput.value = age;
+        }
+      });
+    }
+  });
+
+   // Add click handler for dashboard link
+   document.addEventListener('DOMContentLoaded', function() {
+    const dashboardLink = document.querySelector('[data-page="dashboard"]');
+    if (dashboardLink) {
+      dashboardLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = '/admin/dashboard';
+      });
+    }
+  });
+</script>
+
