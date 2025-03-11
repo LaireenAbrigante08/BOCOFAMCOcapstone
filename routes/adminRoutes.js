@@ -21,4 +21,12 @@ router.post('/register', isAuthenticatedAdmin, adminController.registerMember);
 router.get('/change-password', isAuthenticatedAdmin, adminController.renderChangePasswordPage);
 router.post('/change-password', isAuthenticatedAdmin, adminController.updatePassword);
 
+// Route to render the members list page
+router.get("/members-list", adminController.renderMembersList);
+
+// Route to render Loan Application page
+router.get('/applications', isAuthenticatedAdmin, adminController.getLoanApplications);
+
+router.get('/loan-regular', isAuthenticatedAdmin, adminController.renderRegularLoanForm);
+
 module.exports = router;

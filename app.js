@@ -2,9 +2,12 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
+const multer = require('multer');
+const upload = multer(); // For parsing multipart/form-data
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const memberRoutes = require('./routes/memberRoutes');
+const loanRoutes = require("./routes/loanRoutes"); // Loan routes
 
 const app = express();
 
@@ -20,6 +23,7 @@ app.use(session({
 
 // Serve Static Files (CSS, JS, Images)
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(upload.none());
 
 
 // Set EJS as templating engine
@@ -36,6 +40,7 @@ app.use((req, res, next) => {
 app.use('/', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/member', memberRoutes);
+app.use("/loan", loanRoutes);
 
 // Default route
 app.get('/', (req, res) => res.redirect('/login'));

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const memberController = require('../controllers/memberController');
+const loanController = require("../controllers/loanController");
 
 // Middleware to check if the user is authenticated as a member
 const isAuthenticatedMember = (req, res, next) => {
@@ -49,6 +50,7 @@ router.get('/loan-application', (req, res) => {
 router.get('/loan-regular', (req, res) => {
     res.render('member/loan-regular'); // Render the loan-regular.ejs file
 });
+router.post("/loan-regular", loanController.submitRegularLoan);
 
 // Regular Loan Application Route
 router.get('/loan-salary', (req, res) => {

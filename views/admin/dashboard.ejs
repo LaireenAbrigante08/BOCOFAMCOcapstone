@@ -409,8 +409,8 @@
     <script>
         // Add current date to the dashboard
         const dateElement = document.querySelector('.date-section');
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        dateElement.textContent = new Date().toLocaleDateString('en-US', options);
+        const option = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateElement.textContent = new Date().toLocaleDateString('en-US', option);
         
         // For mobile toggle functionality (if needed)
         function toggleSidebar() {

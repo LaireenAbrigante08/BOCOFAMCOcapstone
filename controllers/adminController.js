@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const Member = require('../models/Member');
+const Loan = require('../models/loan');
 
 
 exports.adminDashboard = (req, res) => {
@@ -120,5 +121,36 @@ exports.updatePassword = async (req, res) => {
         res.render('admin/change-password', { error: "Something went wrong!", success: null });
     }
 };
-// Ensure module.exports includes all functions
+console.log("Member Model:", Member); // Debugging
+
+exports.renderMembersList = (req, res) => {
+    console.log("Checking Member.getAllMembers:", typeof Member.getAllMembers);
+
+    if (typeof Member.getAllMembers !== "function") {
+        return res.status(500).send("❌ Member.getAllMembers is not defined.");
+    }
+
+    Member.getAllMembers((err, results) => {
+        if (err) {
+            console.error("❌ Error fetching members:", err);
+            return res.status(500).send("Failed to fetch members.");
+        }
+        res.render("admin/members-list", { members: results });
+    });
+};
+
+exports.getLoanApplications = (req, res) => {
+    Loan.getAllLoanApplications((err, loans) => {
+        if (err) {
+            console.error('Error fetching loan applications:', err);
+            return res.status(500).send('Internal Server Error');
+        }
+        res.render('admin/applications', { loans });
+    });
+};
+
+exports.renderRegularLoanForm = (req, res) => {
+    res.render('admin/loan-regular'); // Render the Regular/Agricultural Loan form
+};
+
 module.exports = exports;

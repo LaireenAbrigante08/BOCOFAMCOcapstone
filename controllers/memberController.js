@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const Member = require('../models/member'); // Ensure this model has the correct methods
+const Member = require('../models/Member'); // Ensure this model has the correct methods
 
 // Render the change password page
 exports.renderChangePasswordPage = (req, res) => {

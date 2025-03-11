@@ -50,7 +50,16 @@ const Member = {
 
         db.query(query, values, callback);
     },
-
+    // Get all members
+    getAllMembers: (callback) => {
+        const sql = "SELECT * FROM members"; // Ensure correct table name
+        db.query(sql, (err, results) => {
+            if (err) {
+                return callback(err, null);
+            }
+            callback(null, results);
+        });
+    },
     // Find a member by cb_number
     findByCbNumber: (cbNumber) => {
         return new Promise((resolve, reject) => {

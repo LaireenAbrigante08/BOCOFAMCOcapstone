@@ -13,7 +13,7 @@
         }
     
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #f5f7fa;
             color: #333;
             display: flex;
@@ -113,9 +113,24 @@
     <div class="sidebar">
         <div class="logo">Admin Panel</div>
         <div class="nav">
-            <div class="nav-item" onclick="showSection('dashboard')">
+            <div class="nav-item" onclick="window.location.href='/admin/dashboard'">
                 <i class="fa-solid fa-tachometer-alt"></i>
                 <span>Dashboard</span>
+            </div>
+            <div class="nav-item" onclick="window.location.href='/admin/members-list'">
+                <i class="fa-solid fa-users"></i>
+                <span>Members List</span>
+            </div>
+            <div class="nav-item" onclick="toggleDropdown('loans-dropdown')">
+                <i class="fa-solid fa-hand-holding-usd"></i>
+                <span>Loans</span>
+                <i class="fa-solid fa-chevron-down" style="margin-left:auto;"></i>
+            </div>
+            <div id="loans-dropdown" class="dropdown">
+                <div class="nav-item" onclick="window.location.href='/admin/applications'">
+                    <i class="fa-solid fa-file-alt"></i>
+                    <span>Application</span>
+                </div>
             </div>
         </div>
         <div class="nav-bottom">
@@ -142,19 +157,10 @@
     </div>
     
     <script>
-        // Function to show/hide sections
-        function showSection(sectionId) {
-            document.querySelectorAll('.dashboard-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
-        }
-
-        // Function to toggle dropdowns
         function toggleDropdown(dropdownId) {
             let dropdown = document.getElementById(dropdownId);
             dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
         }
-    </script>
+    </script>    
 </body>
 </html>
