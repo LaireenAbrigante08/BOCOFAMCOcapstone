@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Regular/Agricultural Loan Form | BOCOFAMCO Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.clodflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -129,6 +129,12 @@
         </div>
         
         <div class="form-container">
+            <!-- Display the CB_NUMBER -->
+            <div class="form-group">
+                <label for="cbNumber">CB Number</label>
+                <input type="text" id="cbNumber" class="readonly" readonly>
+            </div>
+            
             <div class="form-group">
                 <label for="loanAmount">Loan Amount (₱)</label>
                 <input type="number" id="loanAmount" placeholder="Enter loan amount">
@@ -136,7 +142,7 @@
             
             <div class="form-group">
                 <label for="previousBalance">Previous Loan Balance (₱)</label>
-                <input type="number" id="previousBalance" placeholder="Enter previous loan balance">
+                <input type="number" id="previousBalance" placeholder="Enter previous loan balance" readonly>
             </div>
             
             <div class="form-group">
@@ -162,6 +168,37 @@
     </div>
 
     <script>
+        // Function to get query parameters from the URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Function to fetch loan details based on CB_NUMBER
+        async function fetchLoanDetails(cbNumber) {
+            if (!cbNumber) return;
+
+            try {
+                // Fetch data from the server
+                const response = await fetch(`/api/loan-details?cbNumber=${cbNumber}`);
+                const data = await response.json();
+
+                // Populate the form fields
+                document.getElementById('cbNumber').value = cbNumber;
+                document.getElementById('previousBalance').value = data.previousBalance || 0;
+            } catch (error) {
+                console.error('Error fetching loan details:', error);
+            }
+        }
+
+        // On page load, fetch the CB_NUMBER from the URL and fetch loan details
+        window.onload = () => {
+            const cbNumber = getQueryParam('cbNumber');
+            if (cbNumber) {
+                fetchLoanDetails(cbNumber);
+            }
+        };
+
         // Function to calculate fees
         function calculateFees() {
             const loanAmount = parseFloat(document.getElementById('loanAmount').value) || 0;
@@ -182,7 +219,6 @@
 
         // Attach event listeners
         document.getElementById('loanAmount').addEventListener('input', calculateFees);
-        document.getElementById('previousBalance').addEventListener('input', calculateFees);
 
         // Function to submit the form
         function submitForm() {

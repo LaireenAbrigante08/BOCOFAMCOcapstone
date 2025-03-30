@@ -100,12 +100,13 @@
             overflow-y: auto;
         }
     
-        .dashboard-section {
-            display: none;
+        .chevron {
+            margin-left: auto;
+            transition: transform 0.3s ease;
         }
     
-        .dashboard-section.active {
-            display: block;
+        .nav-item.active .chevron {
+            transform: rotate(180deg);
         }
     </style>
 </head>
@@ -121,23 +122,38 @@
                 <i class="fa-solid fa-users"></i>
                 <span>Members List</span>
             </div>
-            <div class="nav-item" onclick="toggleDropdown('loans-dropdown')">
+            
+            <!-- Improved Loan Applications Dropdown -->
+            <div class="nav-item" onclick="toggleDropdown(this, 'loans-dropdown')">
                 <i class="fa-solid fa-hand-holding-usd"></i>
-                <span>Loans</span>
-                <i class="fa-solid fa-chevron-down" style="margin-left:auto;"></i>
+                <span>Loan Applications</span>
+                <i class="fa-solid fa-chevron-down chevron"></i>
             </div>
             <div id="loans-dropdown" class="dropdown">
-                <div class="nav-item" onclick="window.location.href='/admin/applications'">
-                    <i class="fa-solid fa-file-alt"></i>
-                    <span>Application</span>
+                <div class="nav-item" onclick="window.location.href='/admin/regular_agricultural_loans'">
+                    <i class="fa-solid fa-tractor"></i>
+                    <span>Regular/Agricultural</span>
                 </div>
+                <div class="nav-item" onclick="window.location.href='/admin/loan-applications/salary'">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    <span>Salary Loan</span>
+                </div>
+                <div class="nav-item" onclick="window.location.href='/admin/loan-applications/bonuses'">
+                    <i class="fa-solid fa-gift"></i>
+                    <span>Bonuses Loan</span>
+                </div>
+            </div>
+            
+            <div class="nav-item" onclick="window.location.href='/admin/transactions'">
+                <i class="fa-solid fa-exchange-alt"></i>
+                <span>Transactions</span>
             </div>
         </div>
         <div class="nav-bottom">
-            <div class="nav-item" onclick="toggleDropdown('settings-dropdown')">
+            <div class="nav-item" onclick="toggleDropdown(this, 'settings-dropdown')">
                 <i class="fa-solid fa-cog"></i>
                 <span>Settings</span>
-                <i class="fa-solid fa-chevron-down" style="margin-left:auto;"></i>
+                <i class="fa-solid fa-chevron-down chevron"></i>
             </div>
             <div id="settings-dropdown" class="dropdown">
                 <div class="nav-item" onclick="window.location.href='/admin/register'">
@@ -157,9 +173,22 @@
     </div>
     
     <script>
-        function toggleDropdown(dropdownId) {
-            let dropdown = document.getElementById(dropdownId);
-            dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+        function toggleDropdown(clickedItem, dropdownId) {
+            // Close all other dropdowns first
+            document.querySelectorAll('.dropdown').forEach(dropdown => {
+                if (dropdown.id !== dropdownId) {
+                    dropdown.style.display = 'none';
+                    const parent = dropdown.previousElementSibling;
+                    if (parent) parent.classList.remove('active');
+                }
+            });
+            
+            const dropdown = document.getElementById(dropdownId);
+            const isShowing = dropdown.style.display === 'flex';
+            
+            // Toggle clicked dropdown
+            dropdown.style.display = isShowing ? 'none' : 'flex';
+            clickedItem.classList.toggle('active', !isShowing);
         }
     </script>    
 </body>

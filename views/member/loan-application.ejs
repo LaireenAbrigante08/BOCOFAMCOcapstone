@@ -79,19 +79,13 @@ body {
             <!-- Salary Loan Button -->
             <button class="loan-button" id="salaryLoanBtn">
                 <i class="fa-solid fa-money-bill"></i>
-                <span>Salary Loan</span>
+                <span>Salary/Bonuses Loan</span>
             </button>
 
             <!-- Regular/Agricultural Loan Button -->
             <button class="loan-button" id="regularLoanBtn">
                 <i class="fa-solid fa-tractor"></i>
                 <span>Regular/Agricultural Loan</span>
-            </button>
-
-            <!-- Bonuses Loan Button -->
-            <button class="loan-button" id="bonusesLoanBtn">
-                <i class="fa-solid fa-gift"></i>
-                <span>Bonuses Loan</span>
             </button>
         </div>
     </div>
@@ -105,8 +99,5 @@ body {
             window.location.href = "/member/loan-salary"; // Update kung may salary loan route ka
         });
 
-        document.getElementById("bonusesLoanBtn").addEventListener("click", function() {
-            window.location.href = "/member/loan-bonuses"; // Update kung may bonuses loan route ka
-        });
     </script>
 </body>

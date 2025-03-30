@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 app.use('/', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/member', memberRoutes);
-app.use("/loan", loanRoutes);
+app.use("/member", loanRoutes);
 
 // Default route
 app.get('/', (req, res) => res.redirect('/login'));
