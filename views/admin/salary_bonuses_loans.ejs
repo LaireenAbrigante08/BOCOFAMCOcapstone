@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regular Agricultural Loans | BOCOFAMCO Admin</title>
+    <title>Salary Bonuses Loans | BOCOFAMCO Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -198,6 +198,35 @@
             overflow-x: auto;
         }
         
+        .empty-state {
+            padding: 40px;
+            text-align: center;
+            color: #6b7280;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+        
+        .status-approved {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-rejected {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        
         @media (max-width: 768px) {
             .main-content {
                 margin-left: 0;
@@ -222,12 +251,12 @@
     </style>
 </head>
 <body>
-    <% const currentPage = 'regular-agricultural-loans'; %>
+    <% const currentPage = 'salary-bonuses-loans'; %>
     <%- include('../partials/adminsidebar', { currentPage }) %>
     
     <div class="main-content">
         <div class="page-header">
-            <h1 class="page-title">Regular/Agricultural Loans</h1>
+            <h1 class="page-title">Salary Bonuses Loans</h1>
             
             <div class="search-container">
                 <i class="fas fa-search search-icon"></i>
@@ -243,23 +272,21 @@
                             <th>CB Number</th>
                             <th>Application No</th>
                             <th>Application Date</th>
+                            <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Middle Initial</th>
+                            <th>Municipality</th>
+                            <th>Position</th>
+                            <th>Length of Service</th>
+                            <th>Age</th>
+                            <th>Address</th>
+                            <th>Office/Agency</th>
+                            <th>Basic Salary</th>
+                            <th>Net Take-Home Pay</th>
                             <th>Spouse Name</th>
-                            <th>Member Address</th>
-                            <th>Contact Number</th>
-                            <th>Account Number</th>
-                            <th>Coop ID Number</th>
+                            <th>Contact No</th>
                             <th>Loan Type</th>
                             <th>Loan Amount</th>
-                            <th>Annual Income</th>
-                            <th>Income Source</th>
-                            <th>Collateral</th>
-                            <th>Loan Purpose</th>
-                            <th>Paid-up Capital</th>
-                            <th>Previous Loan Amount</th>
-                            <th>Outstanding Balance</th>
-                            <th>CBU Status</th>
-                            <th>Borrower Type</th>
-                            <th>Loan Status</th>
                             <th>Application Status</th>
                             <th>Date Created</th>
                             <th>Last Updated</th>
@@ -267,71 +294,85 @@
                         </tr>
                     </thead>
                     <tbody id="loansTableBody">
-                        <% loans.forEach(loan => { %>
+                        <% if (loans.length > 0) { %>
+                            <% loans.forEach(loan => { %>
+                                <tr>
+                                    <td class="cb-number"><%= loan.cb_number %></td>
+                                    <td><%= loan.application_no %></td>
+                                    <td><%= new Date(loan.application_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
+                                    <td><%= loan.last_name %></td>
+                                    <td><%= loan.first_name %></td>
+                                    <td><%= loan.middle_initial %></td>
+                                    <td><%= loan.municipality %></td>
+                                    <td><%= loan.position %></td>
+                                    <td><%= loan.length_of_service %></td>
+                                    <td><%= loan.age %></td>
+                                    <td><%= loan.address %></td>
+                                    <td><%= loan.office_agency %></td>
+                                    <td>₱<%= parseFloat(loan.basic_monthly_salary).toLocaleString() %></td>
+                                    <td>₱<%= parseFloat(loan.net_take_home_pay).toLocaleString() %></td>
+                                    <td><%= loan.spouse_name %></td>
+                                    <td><%= loan.contact_no %></td>
+                                    <td><%= loan.loan_type %></td>
+                                    <td>₱<%= parseFloat(loan.loan_amount).toLocaleString() %></td>
+                                    <td>
+                                        <% let statusClass = ''; %>
+                                        <% if (loan.application_status.toLowerCase() === 'approved') { %>
+                                            <% statusClass = 'status-approved'; %>
+                                        <% } else if (loan.application_status.toLowerCase() === 'pending') { %>
+                                            <% statusClass = 'status-pending'; %>
+                                        <% } else if (loan.application_status.toLowerCase() === 'rejected') { %>
+                                            <% statusClass = 'status-rejected'; %>
+                                        <% } %>
+                                        <span class="status-badge <%= statusClass %>"><%= loan.application_status %></span>
+                                    </td>
+                                    <td><%= new Date(loan.date_created).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
+                                    <td><%= new Date(loan.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn view-btn" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="action-btn edit-btn" title="Edit Loan">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="action-btn delete-btn" title="Delete Loan">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        <% } else { %>
                             <tr>
-                                <td class="cb-number"><%= loan.cb_number %></td>
-                                <td><%= loan.application_no %></td>
-                                <td><%= new Date(loan.application_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
-                                <td><%= loan.spouse_name %></td>
-                                <td><%= loan.member_address %></td>
-                                <td><%= loan.contact_number %></td>
-                                <td><%= loan.account_number %></td>
-                                <td><%= loan.coop_id_number %></td>
-                                <td><%= loan.loan_type %></td>
-                                <td><%= loan.loan_amount.toLocaleString() %></td>
-                                <td><%= loan.annual_income.toLocaleString() %></td>
-                                <td><%= loan.income_source %></td>
-                                <td><%= loan.collateral %></td>
-                                <td><%= loan.loan_purpose %></td>
-                                <td><%= loan.paid_up_capital.toLocaleString() %></td>
-                                <td><%= loan.previous_loan_amount.toLocaleString() %></td>
-                                <td><%= loan.outstanding_balance.toLocaleString() %></td>
-                                <td><%= loan.cbu_status %></td>
-                                <td><%= loan.borrower_type %></td>
-                                <td><%= loan.loan_status %></td>
-                                <td><%= loan.application_status %></td>
-                                <td><%= new Date(loan.date_created).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
-                                <td><%= new Date(loan.last_updated).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn view-btn" title="View Details">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="action-btn edit-btn" title="Computation Loan" onclick="redirectToLoanPage('<%= loan.cb_number %>')">
-                                            <i class="fas fa-edit"></i>
-                                        </button>                                        
-                                        <button class="action-btn delete-btn" title="Delete Loan">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                <td colspan="22" class="empty-state">
+                                    <div>
+                                        <i class="fas fa-folder-open fa-3x mb-3" style="margin-bottom: 15px; color: #d1d5db;"></i>
+                                        <p>No loans found.</p>
                                     </div>
                                 </td>
                             </tr>
-                        <% }) %>
+                        <% } %>
                     </tbody>
                 </table>
             </div>
         </div>
         
-        <div class="pagination">
-            <span class="pagination-text">Showing 1-10 of <span id="totalEntries">100</span> entries</span>
-            <div class="pagination-controls">
-                <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
-                <button class="pagination-btn active">1</button>
-                <button class="pagination-btn">2</button>
-                <button class="pagination-btn">3</button>
-                <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+        <% if (loans.length > 0) { %>
+            <div class="pagination">
+                <span class="pagination-text">Showing 1-<span id="visibleCount"><%= loans.length %></span> of <span id="totalEntries"><%= loans.length %></span> entries</span>
+                <div class="pagination-controls">
+                    <button class="pagination-btn"><i class="fas fa-chevron-left"></i></button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
             </div>
-        </div>
+        <% } %>
     </div>
 
     <script>
-        function redirectToLoanPage(cbNumber) {
-        if (!cbNumber) {
-            alert('Error: Missing CB Number');
-            return;
-        }
-        window.location.href = `/admin/loan-regular?cbNumber=` + encodeURIComponent(cbNumber);
-    }
         // Search functionality
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase();
@@ -345,12 +386,12 @@
                 if (isVisible) visibleCount++;
             });
             
-            // Update the pagination text
-            document.getElementById('totalEntries').textContent = visibleCount;
+            // Update the pagination text if it exists
+            const visibleCountElement = document.getElementById('visibleCount');
+            if (visibleCountElement) {
+                visibleCountElement.textContent = visibleCount;
+            }
         });
-        
-        // Initialize total entries count
-        document.getElementById('totalEntries').textContent = document.querySelectorAll('#loansTableBody tr').length;
     </script>
 </body>
 </html>

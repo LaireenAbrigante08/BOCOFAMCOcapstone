@@ -142,6 +142,25 @@ exports.renderMembersList = (req, res) => {
 exports.renderRegularLoanForm = (req, res) => {
     res.render('admin/loan-regular'); // Render the Regular/Agricultural Loan form
 };
+// Fetch and display Regular Agricultural Loans
+exports.getRegularLoans = (req, res) => {
+    Loan.getAllRegularLoans((err, loans) => {
+        if (err) {
+            console.error("❌ Error fetching loans:", err);
+            return res.status(500).send("Server error");
+        }
+        res.render('admin/regular_agricultural_loans', { loans });
+    });
+};
 
+exports.getSalaryBonusesLoans = (req, res) => {
+    Loan.getAllSalaryBonusLoans((err, loans) => {
+        if (err) {
+            console.error("❌ Error fetching salary/bonuses loans:", err);
+            return res.status(500).send("Server error");
+        }
+        res.render('admin/salary_bonuses_loans', { loans });
+    });
+};
 
 module.exports = exports;

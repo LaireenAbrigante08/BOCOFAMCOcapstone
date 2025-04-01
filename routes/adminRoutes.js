@@ -26,5 +26,9 @@ router.get("/members-list", adminController.renderMembersList);
 
 router.get('/loan-regular', isAuthenticatedAdmin, adminController.renderRegularLoanForm);
 
+// Regular Agricultural Loans Page
+router.get('/regular_agricultural_loans', adminController.getRegularLoans);
+
+router.get('/salary_bonuses_loans', adminController.getSalaryBonusesLoans);
 
 module.exports = router;
