@@ -139,18 +139,9 @@ exports.renderMembersList = (req, res) => {
     });
 };
 
-exports.getLoanApplications = (req, res) => {
-    Loan.getAllLoanApplications((err, loans) => {
-        if (err) {
-            console.error('Error fetching loan applications:', err);
-            return res.status(500).send('Internal Server Error');
-        }
-        res.render('admin/applications', { loans });
-    });
-};
-
 exports.renderRegularLoanForm = (req, res) => {
     res.render('admin/loan-regular'); // Render the Regular/Agricultural Loan form
 };
+
 
 module.exports = exports;
