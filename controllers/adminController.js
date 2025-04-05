@@ -142,6 +142,34 @@ exports.renderMembersList = (req, res) => {
 exports.renderRegularLoanForm = (req, res) => {
     res.render('admin/loan-regular'); // Render the Regular/Agricultural Loan form
 };
+exports.renderLoanSalaryBonuses = (req, res) => {
+    const cbNumber = req.query.cbNumber;
+    
+    if (cbNumber) {
+        // Fetch existing loan data if CB Number is provided
+        Loan.getSalaryBonusLoanByCbNumber(cbNumber, (err, loanData) => {
+            if (err) {
+                console.error("Error fetching loan data:", err);
+                return res.render('admin/loan-salary_bonuses', { 
+                    error: "Error loading loan data",
+                    loan: null 
+                });
+            }
+            
+            res.render('admin/loan-salary_bonuses', { 
+                loan: loanData || null,
+                error: null
+            });
+        });
+    } else {
+        // Render empty form for new loan
+        res.render('admin/loan-salary_bonuses', { 
+            loan: null,
+            error: null 
+        });
+    }
+};
+
 // Fetch and display Regular Agricultural Loans
 exports.getRegularLoans = (req, res) => {
     Loan.getAllRegularLoans((err, loans) => {
@@ -161,6 +189,105 @@ exports.getSalaryBonusesLoans = (req, res) => {
         }
         res.render('admin/salary_bonuses_loans', { loans });
     });
+};
+
+exports.saveSalaryBonusLoan = async (req, res) => {
+    try {
+        const {
+            cbNumber,
+            loanType,
+            loanAmount,
+            previousBalance,
+            newBalance,
+            serviceFee,
+            processingFee,
+            totalDeductions,
+            totalLoanReceived,
+            applicationType,
+            memberFee,
+            shareCapital,
+            bayanihanSavings,
+            totalOrAmount,
+            takeHomeAmount
+        } = req.body;
+
+        // Check if a record already exists for this CB number
+        Loan.getSalaryBonusLoanByCbNumber(cbNumber, async (err, existingLoan) => {
+            if (err) {
+                console.error("Error checking for existing loan:", err);
+                return res.status(500).json({ 
+                    success: false, 
+                    message: 'Error checking for existing loan' 
+                });
+            }
+
+            if (existingLoan) {
+                // Update existing record
+                Loan.updateSalaryBonusLoan(
+                    cbNumber,
+                    loanType,
+                    loanAmount,
+                    previousBalance,
+                    newBalance,
+                    serviceFee,
+                    processingFee,
+                    totalDeductions,
+                    totalLoanReceived,
+                    applicationType,
+                    memberFee,
+                    shareCapital,
+                    bayanihanSavings,
+                    totalOrAmount,
+                    takeHomeAmount,
+                    (err) => {
+                        if (err) {
+                            console.error("Error updating loan:", err);
+                            return res.status(500).json({ 
+                                success: false, 
+                                message: 'Error updating loan' 
+                            });
+                        }
+                        res.json({ success: true });
+                    }
+                );
+            } else {
+                // Insert new record
+                Loan.createSalaryBonusLoan(
+                    cbNumber,
+                    loanType,
+                    loanAmount,
+                    previousBalance,
+                    newBalance,
+                    serviceFee,
+                    processingFee,
+                    totalDeductions,
+                    totalLoanReceived,
+                    applicationType,
+                    memberFee,
+                    shareCapital,
+                    bayanihanSavings,
+                    totalOrAmount,
+                    takeHomeAmount,
+                    (err) => {
+                        if (err) {
+                            console.error("Error creating loan:", err);
+                            return res.status(500).json({ 
+                                success: false, 
+                                message: 'Error creating loan' 
+                            });
+                        }
+                        res.json({ success: true });
+                    }
+                );
+            }
+        });
+    } catch (error) {
+        console.error('Error saving loan:', error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Something went wrong!' 
+        });
+    }
 };
 
 module.exports = exports;

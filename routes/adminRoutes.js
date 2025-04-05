@@ -25,10 +25,14 @@ router.post('/change-password', isAuthenticatedAdmin, adminController.updatePass
 router.get("/members-list", adminController.renderMembersList);
 
 router.get('/loan-regular', isAuthenticatedAdmin, adminController.renderRegularLoanForm);
+router.get('/loan-salary_bonuses', isAuthenticatedAdmin, adminController.renderLoanSalaryBonuses);
 
 // Regular Agricultural Loans Page
 router.get('/regular_agricultural_loans', adminController.getRegularLoans);
 
 router.get('/salary_bonuses_loans', adminController.getSalaryBonusesLoans);
+
+// Add this with your other routes
+router.post('/save-salary-bonus-loan', isAuthenticatedAdmin, adminController.saveSalaryBonusLoan);
 
 module.exports = router;

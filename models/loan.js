@@ -22,6 +22,138 @@ class Loan {
             callback(null, results);
         });
     }
+
+    // New method to get Salary/Bonus Loan by CB Number
+    static getSalaryBonusLoanByCbNumber(cbNumber, callback) {
+        const query = 'SELECT * FROM salary_bonuses_loans WHERE cb_number = ?';
+        db.query(query, [cbNumber], (err, results) => {
+            if (err) {
+                console.error(`❌ Error fetching Salary/Bonuses Loan for CB Number ${cbNumber}:`, err);
+                return callback(err, null);
+            }
+            // If no loan found, results will be an empty array
+            if (results.length === 0) {
+                return callback(null, null); // No loan found
+            }
+            callback(null, results[0]); // Return the first result (since cb_number should be unique)
+        });
+    }
+
+    // Add these methods to your Loan class
+static createSalaryBonusLoan(
+    cbNumber,
+    loanType,
+    loanAmount,
+    previousBalance,
+    newBalance,
+    serviceFee,
+    processingFee,
+    totalDeductions,
+    totalLoanReceived,
+    applicationType,
+    memberFee,
+    shareCapital,
+    bayanihanSavings,
+    totalOrAmount,
+    takeHomeAmount,
+    callback
+) {
+    const query = `
+        INSERT INTO salary_loan_transactions (
+            cb_number,
+            loan_type,
+            loan_amount,
+            previous_balance,
+            new_balance,
+            service_fee,
+            processing_fee,
+            total_deductions,
+            total_loan_received,
+            application_type,
+            member_fee,
+            share_capital,
+            bayanihan_savings,
+            total_or_amount,
+            take_home_amount,
+            transaction_date
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+    `;
+    
+    db.query(query, [
+        cbNumber,
+        loanType,
+        loanAmount,
+        previousBalance,
+        newBalance,
+        serviceFee,
+        processingFee,
+        totalDeductions,
+        totalLoanReceived,
+        applicationType,
+        memberFee,
+        shareCapital,
+        bayanihanSavings,
+        totalOrAmount,
+        takeHomeAmount
+    ], callback);
+}
+
+static updateSalaryBonusLoan(
+    cbNumber,
+    loanType,
+    loanAmount,
+    previousBalance,
+    newBalance,
+    serviceFee,
+    processingFee,
+    totalDeductions,
+    totalLoanReceived,
+    applicationType,
+    memberFee,
+    shareCapital,
+    bayanihanSavings,
+    totalOrAmount,
+    takeHomeAmount,
+    callback
+) {
+    const query = `
+        UPDATE salary_loan_transactions SET
+            loan_type = ?,
+            loan_amount = ?,
+            previous_balance = ?,
+            new_balance = ?,
+            service_fee = ?,
+            processing_fee = ?,
+            total_deductions = ?,
+            total_loan_received = ?,
+            application_type = ?,
+            member_fee = ?,
+            share_capital = ?,
+            bayanihan_savings = ?,
+            total_or_amount = ?,
+            take_home_amount = ?,
+            transaction_date = NOW()
+        WHERE cb_number = ?
+    `;
+    
+    db.query(query, [
+        loanType,
+        loanAmount,
+        previousBalance,
+        newBalance,
+        serviceFee,
+        processingFee,
+        totalDeductions,
+        totalLoanReceived,
+        applicationType,
+        memberFee,
+        shareCapital,
+        bayanihanSavings,
+        totalOrAmount,
+        takeHomeAmount,
+        cbNumber
+    ], callback);
+}
 }
 
 module.exports = Loan;
