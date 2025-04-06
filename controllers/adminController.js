@@ -191,6 +191,7 @@ exports.getSalaryBonusesLoans = (req, res) => {
     });
 };
 
+// In controllers/adminController.js
 exports.saveSalaryBonusLoan = async (req, res) => {
     try {
         const {
@@ -211,8 +212,16 @@ exports.saveSalaryBonusLoan = async (req, res) => {
             takeHomeAmount
         } = req.body;
 
+        // Validate required fields
+        if (!cbNumber || isNaN(loanAmount) || isNaN(previousBalance)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Missing required fields' 
+            });
+        }
+
         // Check if a record already exists for this CB number
-        Loan.getSalaryBonusLoanByCbNumber(cbNumber, async (err, existingLoan) => {
+        Loan.getSalaryBonusLoanByCbNumber(cbNumber, (err, existingLoan) => {
             if (err) {
                 console.error("Error checking for existing loan:", err);
                 return res.status(500).json({ 
@@ -247,7 +256,10 @@ exports.saveSalaryBonusLoan = async (req, res) => {
                                 message: 'Error updating loan' 
                             });
                         }
-                        res.json({ success: true });
+                        res.json({ 
+                            success: true,
+                            message: 'Loan updated successfully'
+                        });
                     }
                 );
             } else {
@@ -276,7 +288,10 @@ exports.saveSalaryBonusLoan = async (req, res) => {
                                 message: 'Error creating loan' 
                             });
                         }
-                        res.json({ success: true });
+                        res.json({ 
+                            success: true,
+                            message: 'Loan created successfully'
+                        });
                     }
                 );
             }
@@ -285,7 +300,7 @@ exports.saveSalaryBonusLoan = async (req, res) => {
         console.error('Error saving loan:', error);
         res.status(500).json({ 
             success: false, 
-            message: 'Something went wrong!' 
+            message: 'Internal server error' 
         });
     }
 };

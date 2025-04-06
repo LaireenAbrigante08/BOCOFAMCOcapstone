@@ -41,6 +41,7 @@ app.use('/', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/member', memberRoutes);
 app.use("/member", loanRoutes);
+app.use('/api', loanRoutes);
 
 // Default route
 app.get('/', (req, res) => res.redirect('/login'));

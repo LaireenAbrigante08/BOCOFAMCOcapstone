@@ -39,7 +39,15 @@ class Loan {
         });
     }
 
-    // Add these methods to your Loan class
+// In models/loan.js
+static getSalaryBonusLoanByCbNumber(cbNumber, callback) {
+    const query = 'SELECT * FROM salary_loan_transactions WHERE cb_number = ?';
+    db.query(query, [cbNumber], (err, results) => {
+        if (err) return callback(err);
+        callback(null, results[0] || null);
+    });
+}
+
 static createSalaryBonusLoan(
     cbNumber,
     loanType,
@@ -74,9 +82,8 @@ static createSalaryBonusLoan(
             share_capital,
             bayanihan_savings,
             total_or_amount,
-            take_home_amount,
-            transaction_date
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+            take_home_amount
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     
     db.query(query, [
@@ -131,8 +138,7 @@ static updateSalaryBonusLoan(
             share_capital = ?,
             bayanihan_savings = ?,
             total_or_amount = ?,
-            take_home_amount = ?,
-            transaction_date = NOW()
+            take_home_amount = ?
         WHERE cb_number = ?
     `;
     
